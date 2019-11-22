@@ -423,7 +423,7 @@ float RangeFinder::CalculateDistance() {
             for (int i = 0; i < mDecsize; i++) {
                 tempdata[i] = phasedata[f][i] + temp_val;
             }
-            //divide the constants
+            //divide the Constants
             temp_val=2*PI/mWaveLength[f];
             for (int i = 0; i < mDecsize; i++) {
                 phasedata[f][i] = tempdata[i] / temp_val;

@@ -1,0 +1,86 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "/Users/erabbit/Desktop/projects/LLAP",
+      "sdkFolder": "/Users/erabbit/Library/Android/sdk",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "/Users/erabbit/Desktop/projects/LLAP/app/build/intermediates",
+      "gradleModulePathName": ":app",
+      "moduleRootFolder": "/Users/erabbit/Desktop/projects/LLAP/app",
+      "makeFile": "/Users/erabbit/Desktop/projects/LLAP/app/CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "/Users/erabbit/Desktop/projects/LLAP/.cxx",
+      "cxxFolder": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx",
+      "ndkFolder": "/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499",
+      "ndkVersion": "16.1.4479499",
+      "ndkSupportedAbiList": [
+        "ARMEABI",
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "MIPS",
+        "MIPS64",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [
+      "-DANDROID_PLATFORM\u003dandroid-16",
+      "-DANDROID_TOOLCHAIN\u003dclang",
+      "-DANDROID_ARM_NEON\u003dTRUE",
+      "-DANDROID_STL\u003dgnustl_static",
+      "-DPATH_TO_SUPERPOWERED:STRING\u003d/Users/erabbit/Desktop/projects/LLAP/app/superpowered"
+    ],
+    "cFlagList": [
+      "-O3",
+      "-fsigned-char"
+    ],
+    "cppFlagsList": [
+      "-std\u003dc++11",
+      "-fsigned-char",
+      "-I/Users/erabbit/Desktop/projects/LLAP/app/superpowered"
+    ],
+    "variantName": "release",
+    "soFolder": "/Users/erabbit/Desktop/projects/LLAP/app/build/intermediates/cmake/release/lib",
+    "objFolder": "/Users/erabbit/Desktop/projects/LLAP/app/build/intermediates/cmake/release/obj",
+    "jsonFolder": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release",
+    "gradleBuildOutputFolder": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release",
+    "isDebuggableEnabled": false,
+    "validAbiList": [
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
+    ],
+    "buildTargetSet": []
+  },
+  "abi": "ARM64_V8A",
+  "abiPlatformVersion": 21,
+  "cxxBuildFolder": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a",
+  "jsonFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a/android_gradle_build.json",
+  "gradleBuildOutputFolder": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a",
+  "objFolder": "/Users/erabbit/Desktop/projects/LLAP/app/build/intermediates/cmake/release/obj/arm64-v8a",
+  "buildCommandFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a/build_command.txt",
+  "buildOutputFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a/build_output.txt",
+  "modelOutputFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a/build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a/CMakeLists.txt",
+    "toolchainWrapperFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a/android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a/build_generation_state.json",
+    "cacheKeyFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a/compiler_cache_key.json",
+    "compilerCacheUseFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a/compiler_cache_use.json",
+    "compilerCacheWriteFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a/compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cxx/release/arm64-v8a/compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a/json_generation_record.json",
+  "compileCommandsJsonFile": "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a/compile_commands.json"
+}
