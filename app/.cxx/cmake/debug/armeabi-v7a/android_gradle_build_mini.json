@@ -1,16 +1,16 @@
 {
   "buildFiles": [
-    "/Users/erabbit/Desktop/projects/LLAP/app/CMakeLists.txt"
+    "D:\\Project\\LLAP\\app\\CMakeLists.txt"
   ],
   "cleanCommands": [
-    "/Users/erabbit/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/debug/armeabi-v7a --target clean"
+    "D:\\AndroidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\Project\\LLAP\\app\\.cxx\\cmake\\debug\\armeabi-v7a --target clean"
   ],
   "libraries": {
     "LLAP-Debug-armeabi-v7a": {
       "artifactName": "LLAP",
-      "buildCommand": "/Users/erabbit/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/debug/armeabi-v7a --target LLAP",
+      "buildCommand": "D:\\AndroidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\Project\\LLAP\\app\\.cxx\\cmake\\debug\\armeabi-v7a --target LLAP",
       "abi": "armeabi-v7a",
-      "output": "/Users/erabbit/Desktop/projects/LLAP/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libLLAP.so"
+      "output": "D:\\Project\\LLAP\\app\\build\\intermediates\\cmake\\debug\\obj\\armeabi-v7a\\libLLAP.so"
     }
   }
 }

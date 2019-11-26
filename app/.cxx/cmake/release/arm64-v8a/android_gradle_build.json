@@ -1,9 +1,9 @@
 
 {
-	"buildFiles" : [ "/Users/erabbit/Desktop/projects/LLAP/app/CMakeLists.txt" ],
+	"buildFiles" : [ "D:/Project/LLAP/app/CMakeLists.txt" ],
 	"cleanCommands" : 
 	[
-		"/Users/erabbit/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a --target clean"
+		"D:\\AndroidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\Project\\LLAP\\app\\.cxx\\cmake\\release\\arm64-v8a --target clean"
 	],
 	"cppFileExtensions" : [ "cpp" ],
 	"libraries" : 
@@ -12,39 +12,39 @@
 		{
 			"abi" : "arm64-v8a",
 			"artifactName" : "LLAP",
-			"buildCommand" : "/Users/erabbit/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a --target LLAP",
+			"buildCommand" : "D:\\AndroidSDK\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\Project\\LLAP\\app\\.cxx\\cmake\\release\\arm64-v8a --target LLAP",
 			"buildType" : "release",
 			"files" : 
 			[
 				
 				{
-					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I../../../../superpowered -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/include -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -I/Users/erabbit/Desktop/projects/LLAP/app/superpowered -O2 -DNDEBUG  -fPIC    -c ",
-					"src" : "/Users/erabbit/Desktop/projects/LLAP/app/src/main/cpp/AudioController.cpp",
-					"workingDirectory" : "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a"
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=D:/AndroidSDK/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=D:/AndroidSDK/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I..\\..\\..\\..\\superpowered -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\libs\\arm64-v8a\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include\\backward  -isystem D:/AndroidSDK/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -ID:/Project/LLAP/app/superpowered -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "D:/Project/LLAP/app/src/main/cpp/AudioController.cpp",
+					"workingDirectory" : "D:/Project/LLAP/app/.cxx/cmake/release/arm64-v8a"
 				},
 				
 				{
-					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I../../../../superpowered -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/include -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -I/Users/erabbit/Desktop/projects/LLAP/app/superpowered -O2 -DNDEBUG  -fPIC    -c ",
-					"src" : "/Users/erabbit/Desktop/projects/LLAP/app/src/main/cpp/RangeFinder.cpp",
-					"workingDirectory" : "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a"
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=D:/AndroidSDK/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=D:/AndroidSDK/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I..\\..\\..\\..\\superpowered -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\libs\\arm64-v8a\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include\\backward  -isystem D:/AndroidSDK/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -ID:/Project/LLAP/app/superpowered -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "D:/Project/LLAP/app/src/main/cpp/RangeFinder.cpp",
+					"workingDirectory" : "D:/Project/LLAP/app/.cxx/cmake/release/arm64-v8a"
 				},
 				
 				{
-					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I../../../../superpowered -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/include -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -I/Users/erabbit/Desktop/projects/LLAP/app/superpowered -O2 -DNDEBUG  -fPIC    -c ",
-					"src" : "/Users/erabbit/Desktop/projects/LLAP/app/superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp",
-					"workingDirectory" : "/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/release/arm64-v8a"
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=D:/AndroidSDK/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=D:/AndroidSDK/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I..\\..\\..\\..\\superpowered -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\libs\\arm64-v8a\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include\\backward  -isystem D:/AndroidSDK/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -ID:/Project/LLAP/app/superpowered -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "D:/Project/LLAP/app/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp",
+					"workingDirectory" : "D:/Project/LLAP/app/.cxx/cmake/release/arm64-v8a"
 				}
 			],
-			"output" : "/Users/erabbit/Desktop/projects/LLAP/app/build/intermediates/cmake/release/obj/arm64-v8a/libLLAP.so",
-			"toolchain" : "9500683491574737033"
+			"output" : "D:/Project/LLAP/app/build/intermediates/cmake/release/obj/arm64-v8a/libLLAP.so",
+			"toolchain" : "4252330073"
 		}
 	},
 	"toolchains" : 
 	{
-		"9500683491574737033" : 
+		"4252330073" : 
 		{
-			"cCompilerExecutable" : "/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
-			"cppCompilerExecutable" : "/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+			"cCompilerExecutable" : "D:/AndroidSDK/ndk/16.1.4479499/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe",
+			"cppCompilerExecutable" : "D:/AndroidSDK/ndk/16.1.4479499/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe"
 		}
 	}
 }

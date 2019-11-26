@@ -12,10 +12,10 @@
 #include <thread>
 
 jmethodID gOnNativeID;
-JNIEnv* genv;
+JNIEnv *genv;
 jobject mObject;
 jclass mClass;
-JavaVM* gs_jvm;
+JavaVM *gs_jvm;
 
 struct CallbackData {
     RangeFinder *rangeFinder;
@@ -24,7 +24,8 @@ struct CallbackData {
     float distance;
     float distancechange;
 
-    CallbackData() : rangeFinder(NULL), mtime(0), mUIUpdateTime(0), distance(0), distancechange(0){}
+    CallbackData() : rangeFinder(NULL), mtime(0), mUIUpdateTime(0), distance(0),
+                     distancechange(0) {}
 } cd;
 
 int64_t getTimeNsec() {
@@ -61,7 +62,6 @@ bool AudioController::performRender(void *__unused clientdata, short int *audioI
     }
 
 
-
     memcpy((void *) audioInputOutput, (void *) cd->rangeFinder->GetPlayBuffer(inNumberFrames),
            sizeof(int16_t) * inNumberFrames);
 
@@ -76,9 +76,9 @@ bool AudioController::performRender(void *__unused clientdata, short int *audioI
 //        DebugLog("Distance: %f", cd->distance);
 //        genv->CallVoidMethod(mObject,gOnNativeID,400);
         JNIEnv *env;
-        if((*gs_jvm).AttachCurrentThread(&env, NULL)<0){
-        } else{
-            (*env).CallVoidMethod(mObject,gOnNativeID,int(cd->distance));
+        if ((*gs_jvm).AttachCurrentThread(&env, NULL) < 0) {
+        } else {
+            (*env).CallVoidMethod(mObject, gOnNativeID, int(cd->distance));
         }
         cd->mUIUpdateTime = startTime;
     }
@@ -87,46 +87,45 @@ bool AudioController::performRender(void *__unused clientdata, short int *audioI
 }
 
 
-void AudioController::init() {
+void AudioController::init(int voice_source) {
     DebugLog("init()");
-    setUpAudio();
+    setUpAudio(voice_source);
 }
 
-void AudioController::setUpAudio() {
+void AudioController::setUpAudio(int voice_source) {
     DebugLog("setUpAudio");
     _myRangeFinder = new RangeFinder(MAX_FRAME_SIZE, NUM_FREQ, START_FREQ, FREQ_INTERVAL);
     cd.rangeFinder = _myRangeFinder;
     SuperpoweredCPU::setSustainedPerformanceMode(true);
-    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE , true, true, performRender,
-                                   &cd, -1, SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE *2);
-
+    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true, performRender,
+                                   &cd, -1, SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2,
+                                   voice_source);
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_cn_sencs_llap_MainActivity_Begin(JNIEnv *env, jobject instance) {
     jclass clazz = (*env).FindClass("cn/sencs/llap/MainActivity");
-    if(clazz==NULL)
-    {
+    if (clazz == NULL) {
         DebugLog("clazz IS NULL................");
         return;
     }
 
-    mObject = (jobject)(*env).NewGlobalRef(instance);
+    mObject = (jobject) (*env).NewGlobalRef(instance);
     gOnNativeID = (*env).GetMethodID(clazz, "refresh", "(I)V");
-    if(gOnNativeID==NULL)
-    {
+    if (gOnNativeID == NULL) {
         DebugLog("gOnNativeID IS NULL................");
         return;
     }
 
     (*env).GetJavaVM(&gs_jvm);
     genv = env;
-    AudioController audioController;
+    int voice_recognition = (int) SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION;
+    int voice_commmunication = (int) SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
 
-    audioController.init();
+    AudioController audioController_recognition;
+    audioController_recognition.init(voice_recognition);
 
+    AudioController audioController_communication;
+    audioController_communication.init(voice_commmunication);
 }
-
-
-

@@ -1,7 +1,10 @@
 # ninja log v5
-1	183	0	CMakeFiles/LLAP.dir/superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o	34545bf11c490731
-0	365	0	CMakeFiles/LLAP.dir/src/main/cpp/AudioController.cpp.o	34e2fe71bc3972d7
-0	384	0	CMakeFiles/LLAP.dir/src/main/cpp/RangeFinder.cpp.o	c83c730da3157cce
-384	461	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libLLAP.so	a6ab196360cf1df2
-12	471	0	CMakeFiles/LLAP.dir/src/main/cpp/RangeFinder.cpp.o	c83c730da3157cce
-471	569	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libLLAP.so	a6ab196360cf1df2
+39	217	0	CMakeFiles/LLAP.dir/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o	1b5cfc06bb8e8642
+21	369	0	CMakeFiles/LLAP.dir/src/main/cpp/AudioController.cpp.o	d885638936056ec4
+2	381	0	CMakeFiles/LLAP.dir/src/main/cpp/RangeFinder.cpp.o	aa70a0c18ef8ce89
+381	511	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libLLAP.so	c174bb9ee70011cd
+23	176	0	CMakeFiles/LLAP.dir/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o	1b5cfc06bb8e8642
+2	320	0	CMakeFiles/LLAP.dir/src/main/cpp/AudioController.cpp.o	d885638936056ec4
+321	422	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libLLAP.so	c174bb9ee70011cd
+3	153	0	CMakeFiles/LLAP.dir/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o	1b5cfc06bb8e8642
+153	255	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libLLAP.so	c174bb9ee70011cd

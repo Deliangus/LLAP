@@ -34,10 +34,15 @@
 
 class AudioController {
 public:
-    RangeFinder*_myRangeFinder;
-    void init();
-    void setUpAudio();
-    static bool performRender(void * __unused clientdata, short int *audioInputOutput, int numberOfSamples, int __unused samplerate);
+    RangeFinder *_myRangeFinder;
+
+    void init(int vioce_source);
+
+    void setUpAudio(int voice_source);
+
+    static bool
+    performRender(void *__unused clientdata, short int *audioInputOutput, int numberOfSamples,
+                  int __unused samplerate);
 };
 
 

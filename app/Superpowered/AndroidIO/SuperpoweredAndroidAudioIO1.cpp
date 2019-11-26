@@ -1,4 +1,4 @@
-#include "SuperpoweredAndroidAudioIO.h"
+#include "SuperpoweredAndroidAudioIO1.h"
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 #include <SLES/OpenSLES_AndroidConfiguration.h>
@@ -6,10 +6,13 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <cstring>
+#include <thread>
 
 #define NUM_CHANNELS 1
 
-typedef struct SuperpoweredAndroidAudioIOInternals {
+using namespace std;
+
+typedef struct SuperpoweredAndroidAudioIOInternals1 {
     void *clientdata;
     audioProcessingCallback callback;
     SLObjectItf openSLEngine, outputMix, outputBufferQueue, inputBufferQueue;
@@ -17,10 +20,10 @@ typedef struct SuperpoweredAndroidAudioIOInternals {
     short int *fifobuffer, *silence;
     int samplerate, buffersize, silenceSamples, latencySamples, numBuffers, bufferStep, readBufferIndex, writeBufferIndex;
     bool hasOutput, hasInput, foreground, started;
-} SuperpoweredAndroidAudioIOInternals;
+} SuperpoweredAndroidAudioIOInternals1;
 
 // The entire operation is based on two Android Simple Buffer Queues, one for the audio input and one for the audio output.
-static void startQueues(SuperpoweredAndroidAudioIOInternals *internals) {
+static void startQueues(SuperpoweredAndroidAudioIOInternals1 *internals) {
     if (internals->started) return;
     internals->started = true;
     if (internals->inputBufferQueue) {
@@ -38,7 +41,7 @@ static void startQueues(SuperpoweredAndroidAudioIOInternals *internals) {
 }
 
 // Stopping the Simple Buffer Queues.
-static void stopQueues(SuperpoweredAndroidAudioIOInternals *internals) {
+static void stopQueues(SuperpoweredAndroidAudioIOInternals1 *internals) {
     if (!internals->started) return;
     internals->started = false;
     if (internals->outputBufferQueue) {
@@ -57,8 +60,8 @@ static void stopQueues(SuperpoweredAndroidAudioIOInternals *internals) {
 
 // This is called periodically by the input audio queue. Audio input is received from the media server at this point.
 static void
-SuperpoweredAndroidAudioIO_InputCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
-    SuperpoweredAndroidAudioIOInternals *internals = (SuperpoweredAndroidAudioIOInternals *) pContext;
+SuperpoweredAndroidAudioIO1_InputCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
+    SuperpoweredAndroidAudioIOInternals1 *internals = (SuperpoweredAndroidAudioIOInternals1 *) pContext;
     short int *buffer = internals->fifobuffer + internals->writeBufferIndex * internals->bufferStep;
     if (internals->writeBufferIndex < internals->numBuffers - 1)
         internals->writeBufferIndex++;
@@ -85,8 +88,8 @@ SuperpoweredAndroidAudioIO_InputCallback(SLAndroidSimpleBufferQueueItf caller, v
 
 // This is called periodically by the output audio queue. Audio for the user should be provided here.
 static void
-SuperpoweredAndroidAudioIO_OutputCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
-    SuperpoweredAndroidAudioIOInternals *internals = (SuperpoweredAndroidAudioIOInternals *) pContext;
+SuperpoweredAndroidAudioIO1_OutputCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
+    SuperpoweredAndroidAudioIOInternals1 *internals = (SuperpoweredAndroidAudioIOInternals1 *) pContext;
 
     int buffersAvailable = internals->writeBufferIndex - internals->readBufferIndex;
     if (buffersAvailable < 0)
@@ -134,16 +137,15 @@ SuperpoweredAndroidAudioIO_OutputCallback(SLAndroidSimpleBufferQueueItf caller, 
     };
 }
 
-SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffersize,
-                                                       bool enableInput, bool enableOutput,
-                                                       audioProcessingCallback callback,
-                                                       void *clientdata, int inputStreamType,
-                                                       int outputStreamType, int latencySamples,
-                                                       int voice_source) {
+SuperpoweredAndroidAudioIO1::SuperpoweredAndroidAudioIO1(int samplerate, int buffersize,
+                                                         bool enableInput, bool enableOutput,
+                                                         audioProcessingCallback callback,
+                                                         void *clientdata, int inputStreamType,
+                                                         int outputStreamType, int latencySamples) {
     static const SLboolean requireds[2] = {SL_BOOLEAN_TRUE, SL_BOOLEAN_FALSE};
 
-    internals = new SuperpoweredAndroidAudioIOInternals;
-    memset(internals, 0, sizeof(SuperpoweredAndroidAudioIOInternals));
+    internals = new SuperpoweredAndroidAudioIOInternals1;
+    memset(internals, 0, sizeof(SuperpoweredAndroidAudioIOInternals1));
     internals->samplerate = samplerate;
     internals->buffersize = buffersize;
     internals->clientdata = clientdata;
@@ -193,11 +195,8 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
                                                       &internals->inputBufferQueue, &inputSource,
                                                       &inputSink, 2, inputInterfaces, requireds);
 
-        if (inputStreamType == -1) {
-            inputStreamType = (int) SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION; // Configure the voice recognition preset which has no signal processing for lower latency.
-            //inputStreamType = (int) SL_ANDROID_RECORDING_PRESET_CAMCORDER; // uses the microphone audio source with the same orientation as the camera if available, the main device microphone otherwise
-            //inputStreamType = (int) SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
-        }
+        if (inputStreamType == -1)
+            inputStreamType = (int) SL_ANDROID_RECORDING_PRESET_CAMCORDER; // Configure the voice recognition preset which has no signal processing for lower latency.
         if (inputStreamType > -1) {
             SLAndroidConfigurationItf inputConfiguration;
             if ((*internals->inputBufferQueue)->GetInterface(internals->inputBufferQueue,
@@ -250,7 +249,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
                                                      SL_IID_ANDROIDSIMPLEBUFFERQUEUE,
                                                      &internals->inputBufferQueueInterface);
         (*internals->inputBufferQueueInterface)->RegisterCallback(
-                internals->inputBufferQueueInterface, SuperpoweredAndroidAudioIO_InputCallback,
+                internals->inputBufferQueueInterface, SuperpoweredAndroidAudioIO1_InputCallback,
                 internals);
         (*internals->inputBufferQueueInterface)->Enqueue(internals->inputBufferQueueInterface,
                                                          internals->fifobuffer,
@@ -262,7 +261,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
                                                       SL_IID_BUFFERQUEUE,
                                                       &internals->outputBufferQueueInterface);
         (*internals->outputBufferQueueInterface)->RegisterCallback(
-                internals->outputBufferQueueInterface, SuperpoweredAndroidAudioIO_OutputCallback,
+                internals->outputBufferQueueInterface, SuperpoweredAndroidAudioIO1_OutputCallback,
                 internals);
         (*internals->outputBufferQueueInterface)->Enqueue(internals->outputBufferQueueInterface,
                                                           internals->fifobuffer,
@@ -272,24 +271,24 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     startQueues(internals);
 }
 
-void SuperpoweredAndroidAudioIO::onForeground() {
+void SuperpoweredAndroidAudioIO1::onForeground() {
     internals->foreground = true;
     startQueues(internals);
 }
 
-void SuperpoweredAndroidAudioIO::onBackground() {
+void SuperpoweredAndroidAudioIO1::onBackground() {
     internals->foreground = false;
 }
 
-void SuperpoweredAndroidAudioIO::start() {
+void SuperpoweredAndroidAudioIO1::start() {
     startQueues(internals);
 }
 
-void SuperpoweredAndroidAudioIO::stop() {
+void SuperpoweredAndroidAudioIO1::stop() {
     stopQueues(internals);
 }
 
-SuperpoweredAndroidAudioIO::~SuperpoweredAndroidAudioIO() {
+SuperpoweredAndroidAudioIO1::~SuperpoweredAndroidAudioIO1() {
     stopQueues(internals);
     usleep(200000);
     if (internals->outputBufferQueue)

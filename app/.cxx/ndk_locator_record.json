@@ -1,5 +1,5 @@
 {
-  "ndkFolder": "/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499",
+  "ndkFolder": "D:\\AndroidSDK\\ndk\\16.1.4479499",
   "messages": [
     {
       "level": "INFO",
@@ -7,7 +7,7 @@
     },
     {
       "level": "INFO",
-      "message": "ndk.dir in local.properties is /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499"
+      "message": "ndk.dir in local.properties is D:\\AndroidSDK\\ndk\\16.1.4479499"
     },
     {
       "level": "INFO",
@@ -15,27 +15,35 @@
     },
     {
       "level": "INFO",
-      "message": "sdkFolder is /Users/erabbit/Library/Android/sdk"
+      "message": "sdkFolder is D:\\AndroidSDK"
     },
     {
       "level": "INFO",
-      "message": "Considering /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499 by ndk.dir"
+      "message": "Considering D:\\AndroidSDK\\ndk\\16.1.4479499 by ndk.dir"
     },
     {
       "level": "INFO",
-      "message": "Considering /Users/erabbit/Library/Android/sdk/ndk-bundle in SDK ndk-bundle folder"
+      "message": "Considering D:\\AndroidSDK\\ndk-bundle in SDK ndk-bundle folder"
     },
     {
       "level": "INFO",
-      "message": "Considering /Users/erabbit/Library/Android/sdk/ndk/16.1.4479499 in SDK ndk folder"
+      "message": "Considering D:\\AndroidSDK\\ndk\\16.1.4479499 in SDK ndk folder"
     },
     {
       "level": "INFO",
-      "message": "Rejected /Users/erabbit/Library/Android/sdk/ndk-bundle in SDK ndk-bundle folder because that location has no source.properties"
+      "message": "Considering D:\\AndroidSDK\\ndk\\20.1.5948944 in SDK ndk folder"
     },
     {
       "level": "INFO",
-      "message": "Found requested ndk.dir (/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499) which has version 16.1.4479499"
+      "message": "Rejected D:\\AndroidSDK\\ndk-bundle in SDK ndk-bundle folder because that location has no source.properties"
+    },
+    {
+      "level": "INFO",
+      "message": "Rejected D:\\AndroidSDK\\ndk\\20.1.5948944 in SDK ndk folder because that location has no source.properties"
+    },
+    {
+      "level": "INFO",
+      "message": "Found requested ndk.dir (D:\\AndroidSDK\\ndk\\16.1.4479499) which has version 16.1.4479499"
     }
   ]
 }
