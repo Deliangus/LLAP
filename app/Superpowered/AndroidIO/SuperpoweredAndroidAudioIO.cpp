@@ -17,6 +17,7 @@ typedef struct SuperpoweredAndroidAudioIOInternals {
     short int *fifobuffer, *silence;
     int samplerate, buffersize, silenceSamples, latencySamples, numBuffers, bufferStep, readBufferIndex, writeBufferIndex;
     bool hasOutput, hasInput, foreground, started;
+    int voice_source;
 } SuperpoweredAndroidAudioIOInternals;
 
 // The entire operation is based on two Android Simple Buffer Queues, one for the audio input and one for the audio output.
@@ -74,7 +75,7 @@ SuperpoweredAndroidAudioIO_InputCallback(SLAndroidSimpleBufferQueueItf caller, v
             internals->callback(internals->clientdata, internals->fifobuffer +
                                                        internals->readBufferIndex *
                                                        internals->bufferStep, internals->buffersize,
-                                internals->samplerate);
+                                internals->samplerate, internals->voice_source);
             if (internals->readBufferIndex < internals->numBuffers - 1)
                 internals->readBufferIndex++;
             else internals->readBufferIndex = 0;
@@ -98,7 +99,7 @@ SuperpoweredAndroidAudioIO_OutputCallback(SLAndroidSimpleBufferQueueItf caller, 
         if (buffersAvailable * internals->buffersize >=
             internals->latencySamples) { // if we have enough audio input available
             if (!internals->callback(internals->clientdata, output, internals->buffersize,
-                                     internals->samplerate)) {
+                                     internals->samplerate, internals->voice_source)) {
                 memset(output, 0, (size_t) internals->buffersize * NUM_CHANNELS * 2);
                 internals->silenceSamples += internals->buffersize;
             } else internals->silenceSamples = 0;
@@ -108,7 +109,7 @@ SuperpoweredAndroidAudioIO_OutputCallback(SLAndroidSimpleBufferQueueItf caller, 
                 internals->fifobuffer + internals->writeBufferIndex * internals->bufferStep;
 
         if (!internals->callback(internals->clientdata, audioToGenerate, internals->buffersize,
-                                 internals->samplerate)) {
+                                 internals->samplerate, internals->voice_source)) {
             memset(audioToGenerate, 0, (size_t) internals->buffersize * NUM_CHANNELS * 2);
             internals->silenceSamples += internals->buffersize;
         } else internals->silenceSamples = 0;
@@ -153,6 +154,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     internals->foreground = true;
     internals->started = false;
     internals->silence = (short int *) malloc((size_t) buffersize * NUM_CHANNELS * 2);
+    internals->voice_source = voice_source;
     memset(internals->silence, 0, (size_t) buffersize * NUM_CHANNELS * 2);
     internals->latencySamples = latencySamples < buffersize ? buffersize : latencySamples;
 
@@ -194,7 +196,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
                                                       &inputSink, 2, inputInterfaces, requireds);
 
         if (inputStreamType == -1) {
-            inputStreamType = (int) SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION; // Configure the voice recognition preset which has no signal processing for lower latency.
+            inputStreamType = voice_source; // Configure the voice recognition preset which has no signal processing for lower latency.
             //inputStreamType = (int) SL_ANDROID_RECORDING_PRESET_CAMCORDER; // uses the microphone audio source with the same orientation as the camera if available, the main device microphone otherwise
             //inputStreamType = (int) SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
         }

@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView_com"
         android:layout_width="137dp"
         android:layout_height="58dp"
 
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <SeekBar
-        android:id="@+id/seekBar"
+        android:id="@+id/seekBar_com"
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
@@ -32,19 +32,45 @@
         android:min="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_com" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="89dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="开始"
+        android:layout_marginEnd="8dp"
+        android:text="Start"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_rec"
+        android:layout_width="137dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="137dp"
+        android:text="TextView"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar_com" />
+
+    <SeekBar
+        android:id="@+id/seekBar_rec"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="71dp"
+        android:max="500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_rec" />
 
 </android.support.constraint.ConstraintLayout>

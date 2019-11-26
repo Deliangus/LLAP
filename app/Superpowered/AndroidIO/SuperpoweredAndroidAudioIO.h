@@ -1,6 +1,10 @@
 #ifndef Header_SuperpoweredAndroidAudioIO
 #define Header_SuperpoweredAndroidAudioIO
 
+#include <SLES/OpenSLES.h>
+#include <SLES/OpenSLES_Android.h>
+#include <SLES/OpenSLES_AndroidConfiguration.h>
+
 struct SuperpoweredAndroidAudioIOInternals;
 
 /**
@@ -14,7 +18,7 @@ struct SuperpoweredAndroidAudioIOInternals;
  @param samplerate The current sample rate in Hz.
 */
 typedef bool (*audioProcessingCallback)(void *clientdata, short int *audioIO, int numberOfSamples,
-                                        int samplerate);
+                                        int samplerate, int voice_source);
 
 /**
  @brief Easy handling of OpenSL ES audio input and/or output.
@@ -37,7 +41,8 @@ public:
     SuperpoweredAndroidAudioIO(int samplerate, int buffersize, bool enableInput, bool enableOutput,
                                audioProcessingCallback callback, void *clientdata,
                                int inputStreamType = -1, int outputStreamType = -1,
-                               int latencySamples = 0, int voice_source);
+                               int latencySamples = 0,
+                               int voice_source = (int) SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION);
 
     ~SuperpoweredAndroidAudioIO();
 

@@ -14,11 +14,8 @@ import java.io.InputStream;
 
 public class AudioSoundPlayer {
 
-    private SparseArray<PlayThread> threadMap = null;
-    private Context context;
-    private static final SparseArray<String> SOUND_MAP = new SparseArray<>();
     public static final int MAX_VOLUME = 100, CURRENT_VOLUME = 90;
-    private final String TAG = "AudioSoundPlayer:";
+    private static final SparseArray<String> SOUND_MAP = new SparseArray<>();
 
     static {
         // white keys sounds
@@ -31,6 +28,10 @@ public class AudioSoundPlayer {
         SOUND_MAP.put(7, "si");
         SOUND_MAP.put(8, "do-oct");
     }
+
+    private final String TAG = "AudioSoundPlayer:";
+    private SparseArray<PlayThread> threadMap = null;
+    private Context context;
 
     public AudioSoundPlayer(Context context) {
         this.context = context;
@@ -84,7 +85,9 @@ public class AudioSoundPlayer {
 
                 audioTrack.play();
                 InputStream audioStream = null;
-                int headerOffset = 0x2C; long bytesWritten = 0; int bytesRead = 0;
+                int headerOffset = 0x2C;
+                long bytesWritten = 0;
+                int bytesRead = 0;
 
                 audioStream = assetManager.open(path);
                 audioStream.read(buffer, 0, headerOffset);
@@ -97,7 +100,7 @@ public class AudioSoundPlayer {
                 audioTrack.release();
 
             } catch (Exception e) {
-                Log.d(TAG,e.toString());
+                Log.d(TAG, e.toString());
             } finally {
                 if (audioTrack != null) {
                     audioTrack.release();

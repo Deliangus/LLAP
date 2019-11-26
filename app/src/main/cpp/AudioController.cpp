@@ -11,11 +11,14 @@
 #include <unistd.h>
 #include <thread>
 
-jmethodID gOnNativeID;
+jmethodID func_refresh;
 JNIEnv *genv;
 jobject mObject;
 jclass mClass;
 JavaVM *gs_jvm;
+
+AudioController audioController_recognition;
+AudioController audioController_communication;
 
 struct CallbackData {
     RangeFinder *rangeFinder;
@@ -36,16 +39,13 @@ int64_t getTimeNsec() {
 
 
 bool AudioController::performRender(void *__unused clientdata, short int *audioInputOutput,
-                                    int inNumberFrames, int __unused samplerate) {
+                                    int inNumberFrames, int __unused samplerate, int voice_source) {
     CallbackData *cd = (CallbackData *) clientdata;
 
 //    float distancechange;
     uint64_t startTime = (uint64_t) getTimeNsec();
 //    DebugLog("start   %d",int(startTime/1e6));
 //    DebugLog("%d %d %d", int(audioInputOutput[0]),int(audioInputOutput[1]),int(audioInputOutput[2]));
-
-
-
 
     memcpy((void *) cd->rangeFinder->GetRecDataBuffer(inNumberFrames), (void *) audioInputOutput,
            sizeof(int16_t) * inNumberFrames);
@@ -74,11 +74,11 @@ bool AudioController::performRender(void *__unused clientdata, short int *audioI
 //            [[NSNotificationCenter defaultCenter] postNotificationName:@"AudioDisUpdate" object:nil];
 //        cd->audioController->audiodistance=cd->distance;
 //        DebugLog("Distance: %f", cd->distance);
-//        genv->CallVoidMethod(mObject,gOnNativeID,400);
+//        genv->CallVoidMethod(mObject,func_refresh,400);
         JNIEnv *env;
         if ((*gs_jvm).AttachCurrentThread(&env, NULL) < 0) {
         } else {
-            (*env).CallVoidMethod(mObject, gOnNativeID, int(cd->distance));
+            (*env).CallVoidMethod(mObject, func_refresh, voice_source, int(cd->distance));
         }
         cd->mUIUpdateTime = startTime;
     }
@@ -92,19 +92,25 @@ void AudioController::init(int voice_source) {
     setUpAudio(voice_source);
 }
 
+void AudioController::stop() {
+    superpoweredAndroidAudioIO->stop();
+}
+
 void AudioController::setUpAudio(int voice_source) {
     DebugLog("setUpAudio");
     _myRangeFinder = new RangeFinder(MAX_FRAME_SIZE, NUM_FREQ, START_FREQ, FREQ_INTERVAL);
     cd.rangeFinder = _myRangeFinder;
     SuperpoweredCPU::setSustainedPerformanceMode(true);
-    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true, performRender,
-                                   &cd, -1, SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2,
-                                   voice_source);
+    superpoweredAndroidAudioIO = new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE,
+                                                                true, true, performRender,
+                                                                &cd, -1, SL_ANDROID_STREAM_MEDIA,
+                                                                MAX_FRAME_SIZE * 2,
+                                                                voice_source);
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_cn_sencs_llap_MainActivity_Begin(JNIEnv *env, jobject instance) {
+Java_cn_sencs_llap_MainActivity_Begin(JNIEnv *env, jobject instance, jint voice_source) {
     jclass clazz = (*env).FindClass("cn/sencs/llap/MainActivity");
     if (clazz == NULL) {
         DebugLog("clazz IS NULL................");
@@ -112,20 +118,43 @@ Java_cn_sencs_llap_MainActivity_Begin(JNIEnv *env, jobject instance) {
     }
 
     mObject = (jobject) (*env).NewGlobalRef(instance);
-    gOnNativeID = (*env).GetMethodID(clazz, "refresh", "(I)V");
-    if (gOnNativeID == NULL) {
-        DebugLog("gOnNativeID IS NULL................");
+    func_refresh = (*env).GetMethodID(clazz, "refresh", "(II)V");
+    if (func_refresh == NULL) {
+        DebugLog("func_refresh IS NULL................");
         return;
     }
 
     (*env).GetJavaVM(&gs_jvm);
     genv = env;
-    int voice_recognition = (int) SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION;
-    int voice_commmunication = (int) SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
 
-    AudioController audioController_recognition;
-    audioController_recognition.init(voice_recognition);
 
-    AudioController audioController_communication;
-    audioController_communication.init(voice_commmunication);
+    ///*
+    if (voice_source == AudioController::VOICE_RECOGNITION) {
+        audioController_recognition.init(AudioController::VOICE_RECOGNITION);
+    } else if (voice_source == AudioController::VOICE_COMMUNICATION) {
+        audioController_communication.init(AudioController::VOICE_COMMUNICATION);
+    }
+    //*/
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_cn_sencs_llap_MainActivity_Stop(JNIEnv *env, jobject instance, jint voice_source) {
+    if (voice_source == AudioController::VOICE_RECOGNITION) {
+        audioController_recognition.stop();
+    } else if (voice_source == AudioController::VOICE_COMMUNICATION) {
+        audioController_communication.stop();
+    }
+}
+
+extern "C"
+JNIEXPORT int JNICALL
+Java_cn_sencs_llap_MainActivity_getVOICE_1RECOGNITION(JNIEnv *env, jobject instance) {
+    return AudioController::VOICE_RECOGNITION;
+}
+
+extern "C"
+JNIEXPORT int JNICALL
+Java_cn_sencs_llap_MainActivity_getVOICE_1COMMUNICATION(JNIEnv *env, jobject instance) {
+    return AudioController::VOICE_COMMUNICATION;
 }

@@ -34,15 +34,22 @@
 
 class AudioController {
 public:
+
+    SuperpoweredAndroidAudioIO *superpoweredAndroidAudioIO;
     RangeFinder *_myRangeFinder;
+
+    const static int VOICE_RECOGNITION = (int) SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION;
+    const static int VOICE_COMMUNICATION = (int) SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
 
     void init(int vioce_source);
 
     void setUpAudio(int voice_source);
 
+    void stop();
+
     static bool
     performRender(void *__unused clientdata, short int *audioInputOutput, int numberOfSamples,
-                  int __unused samplerate);
+                  int __unused samplerate, int voice_source);
 };
 
 
