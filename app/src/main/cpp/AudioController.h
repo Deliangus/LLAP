@@ -38,18 +38,24 @@ public:
     SuperpoweredAndroidAudioIO *superpoweredAndroidAudioIO;
     RangeFinder *_myRangeFinder;
 
+    static bool output_enabled;
+    static int activate_controller;
+
     const static int VOICE_RECOGNITION = (int) SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION;
     const static int VOICE_COMMUNICATION = (int) SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
+    const static int VOICE_CAMCORDER = (int) SL_ANDROID_RECORDING_PRESET_CAMCORDER;
+    const static int VOICE_UNPROCESSED = (int) SL_ANDROID_RECORDING_PRESET_UNPROCESSED;
 
-    void init(int vioce_source);
+    void init(int voice_source, bool enable_input, bool enable_outputs);
 
-    void setUpAudio(int voice_source);
+    void setUpAudio(int voice_source, bool enable_input, bool enable_output);
 
     void stop();
 
     static bool
     performRender(void *__unused clientdata, short int *audioInputOutput, int numberOfSamples,
                   int __unused samplerate, int voice_source);
+
 };
 
 

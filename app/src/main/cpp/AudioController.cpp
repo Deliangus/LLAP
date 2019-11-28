@@ -19,6 +19,12 @@ JavaVM *gs_jvm;
 
 AudioController audioController_recognition;
 AudioController audioController_communication;
+AudioController audioController_unprocessed;
+AudioController audioController_cameraorder;
+AudioController audioController_output;
+
+bool AudioController::output_enabled = false;
+int AudioController::activate_controller = 0;
 
 struct CallbackData {
     RangeFinder *rangeFinder;
@@ -87,22 +93,23 @@ bool AudioController::performRender(void *__unused clientdata, short int *audioI
 }
 
 
-void AudioController::init(int voice_source) {
+void AudioController::init(int voice_source, bool enable_input, bool enable_output) {
     DebugLog("init()");
-    setUpAudio(voice_source);
+    setUpAudio(voice_source, enable_input, enable_output);
 }
 
 void AudioController::stop() {
     superpoweredAndroidAudioIO->stop();
 }
 
-void AudioController::setUpAudio(int voice_source) {
+void AudioController::setUpAudio(int voice_source, bool enable_input, bool enable_output) {
     DebugLog("setUpAudio");
     _myRangeFinder = new RangeFinder(MAX_FRAME_SIZE, NUM_FREQ, START_FREQ, FREQ_INTERVAL);
     cd.rangeFinder = _myRangeFinder;
     SuperpoweredCPU::setSustainedPerformanceMode(true);
     superpoweredAndroidAudioIO = new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE,
-                                                                true, true, performRender,
+                                                                enable_input, enable_output,
+                                                                performRender,
                                                                 &cd, -1, SL_ANDROID_STREAM_MEDIA,
                                                                 MAX_FRAME_SIZE * 2,
                                                                 voice_source);
@@ -127,13 +134,23 @@ Java_cn_sencs_llap_MainActivity_Begin(JNIEnv *env, jobject instance, jint voice_
     (*env).GetJavaVM(&gs_jvm);
     genv = env;
 
+    if (!AudioController::output_enabled) {
+        audioController_output.init(-1, false, true);
+        AudioController::output_enabled = true;
+    }
 
     ///*
     if (voice_source == AudioController::VOICE_RECOGNITION) {
-        audioController_recognition.init(AudioController::VOICE_RECOGNITION);
+        audioController_recognition.init(AudioController::VOICE_RECOGNITION, true, false);
     } else if (voice_source == AudioController::VOICE_COMMUNICATION) {
-        audioController_communication.init(AudioController::VOICE_COMMUNICATION);
+        audioController_communication.init(AudioController::VOICE_COMMUNICATION, true, false);
+    } else if (voice_source == AudioController::VOICE_CAMCORDER) {
+        audioController_cameraorder.init(AudioController::VOICE_CAMCORDER, true, false);
+    } else if (voice_source == AudioController::VOICE_UNPROCESSED) {
+        audioController_unprocessed.init(AudioController::VOICE_UNPROCESSED, true, false);
     }
+
+    AudioController::activate_controller += 1;
     //*/
 }
 
@@ -144,7 +161,19 @@ Java_cn_sencs_llap_MainActivity_Stop(JNIEnv *env, jobject instance, jint voice_s
         audioController_recognition.stop();
     } else if (voice_source == AudioController::VOICE_COMMUNICATION) {
         audioController_communication.stop();
+    } else if (voice_source == AudioController::VOICE_CAMCORDER) {
+        audioController_cameraorder.stop();
+    } else if (voice_source == AudioController::VOICE_UNPROCESSED) {
+        audioController_unprocessed.stop();
     }
+
+    AudioController::activate_controller -= 1;
+
+    if (AudioController::activate_controller <= 0) {
+        audioController_output.stop();
+        AudioController::output_enabled = false;
+    }
+
 }
 
 extern "C"
@@ -157,4 +186,16 @@ extern "C"
 JNIEXPORT int JNICALL
 Java_cn_sencs_llap_MainActivity_getVOICE_1COMMUNICATION(JNIEnv *env, jobject instance) {
     return AudioController::VOICE_COMMUNICATION;
+}
+
+extern "C"
+JNIEXPORT int JNICALL
+Java_cn_sencs_llap_MainActivity_getVOICE_1UNPROCESSED(JNIEnv *env, jobject instance) {
+    return AudioController::VOICE_UNPROCESSED;
+}
+
+extern "C"
+JNIEXPORT int JNICALL
+Java_cn_sencs_llap_MainActivity_getVOICE_1CAMCORDER(JNIEnv *env, jobject instance) {
+    return AudioController::VOICE_CAMCORDER;
 }

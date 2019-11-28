@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     static {
@@ -27,64 +26,111 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "llap";
     public int VOICE_RECOGNITION = getVOICE_RECOGNITION();
     public int VOICE_COMMUNICATION = getVOICE_COMMUNICATION();
+    public int VOICE_CAMCORDER = getVOICE_CAMCORDER();
+    public int VOICE_UNPROCESSED = getVOICE_UNPROCESSED();
 
     private SeekBar sb_com;
     private TextView tv_com;
     private SeekBar sb_rec;
     private TextView tv_rec;
-    private int distance_communication;
-    private int distance_recognization;
+    private SeekBar sb_unp;
+    private TextView tv_unp;
+    private SeekBar sb_cam;
+    private TextView tv_cam;
     private AudioSoundPlayer audioHandler;
     private ArrayList<Key> keys = new ArrayList<>();
     private Timer mTimer = new Timer();
     private ArrayList<Key> waitingQueues = new ArrayList<>();
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 0) {
-                tv_com.setText(Integer.toString(distance_communication) + " mm");
-                sb_com.setProgress(distance_communication);
-                tv_rec.setText(Integer.toString(distance_recognization) + " mm");
-                sb_rec.setProgress(distance_recognization);
-                /* Judging if this is a pressdown on the key*/
-                final Key curKey = keyForDistance(distance_communication);
-                if (curKey != null) {
-                    Log.d(TAG, "key: " + curKey.sound);
-                    TimerTask playSounds = new EnhancedTimerTask(curKey) {
-                        @Override
-                        public void run() {
-                            Key laterKey_com = keyForDistance(distance_communication);
-                            Key laterKey_rec = keyForDistance(distance_recognization);
-                            if (laterKey_com != null) {
-                                if (this.key.sound == laterKey_com.sound) {
-                                    audioHandler.playNote(laterKey_com.sound);
-                                } else {
-                                    for (Key key : keys) {
-                                        if (audioHandler.isNotePlaying(key.sound)) {
-                                            audioHandler.stopNote(key.sound);
-                                        }
-                                    }
-                                }
-                            }
 
-                            if (laterKey_rec != null) {
-                                if (this.key.sound == laterKey_rec.sound) {
-                                    audioHandler.playNote(laterKey_rec.sound);
-                                } else {
-                                    for (Key key : keys) {
-                                        if (audioHandler.isNotePlaying(key.sound)) {
-                                            audioHandler.stopNote(key.sound);
+    private Handler handler = new
+            Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == 0) {
+                        if (msg.arg1 == VOICE_COMMUNICATION) {
+                            tv_com.setText(Integer.toString(msg.arg2) + " mm");
+                            sb_com.setProgress(msg.arg2);
+
+                            /* Judging if this is a pressdown on the key*/
+                            /*
+                            final Key curKey = keyForDistance(msg.arg2);
+                            if (curKey != null) {
+                                Log.d(TAG, "key: " + curKey.sound);
+                                TimerTask playSounds = new EnhancedTimerTask(curKey) {
+                                    @Override
+                                    public void run() {
+                                        Key laterKey_com = keyForDistance(distance_communication);
+                                        if (laterKey_com != null) {
+                                            if (this.key.sound == laterKey_com.sound) {
+                                                audioHandler.playNote(laterKey_com.sound);
+                                            } else {
+                                                for (Key key : keys) {
+                                                    if (audioHandler.isNotePlaying(key.sound)) {
+                                                        audioHandler.stopNote(key.sound);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        Key laterKey_rec = keyForDistance(distance_recognition);
+                                        if (laterKey_rec != null) {
+                                            if (this.key.sound == laterKey_rec.sound) {
+                                                audioHandler.playNote(laterKey_rec.sound);
+                                            } else {
+                                                for (Key key : keys) {
+                                                    if (audioHandler.isNotePlaying(key.sound)) {
+                                                        audioHandler.stopNote(key.sound);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        Key laterKey_cam = keyForDistance(distance_cameraorder);
+                                        if (laterKey_com != null) {
+                                            if (this.key.sound == laterKey_cam.sound) {
+                                                audioHandler.playNote(laterKey_cam.sound);
+                                            } else {
+                                                for (Key key : keys) {
+                                                    if (audioHandler.isNotePlaying(key.sound)) {
+                                                        audioHandler.stopNote(key.sound);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        Key laterKey_unp = keyForDistance(distance_unprocessed);
+                                        if (laterKey_rec != null) {
+                                            if (this.key.sound == laterKey_unp.sound) {
+                                                audioHandler.playNote(laterKey_unp.sound);
+                                            } else {
+                                                for (Key key : keys) {
+                                                    if (audioHandler.isNotePlaying(key.sound)) {
+                                                        audioHandler.stopNote(key.sound);
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
-                                }
+                                };
+                                mTimer.schedule(playSounds, Constants.PAUSING_THRESHOLD);
                             }
+                             */
+
+                        } else if (msg.arg1 == VOICE_RECOGNITION) {
+                            tv_rec.setText(Integer.toString(msg.arg2) + " mm");
+                            sb_rec.setProgress(msg.arg2);
+                        } else if (msg.arg1 == VOICE_CAMCORDER) {
+                            tv_cam.setText(Integer.toString(msg.arg2) + " mm");
+                            sb_cam.setProgress(msg.arg2);
+                        } else if (msg.arg1 == VOICE_UNPROCESSED) {
+                            tv_unp.setText(Integer.toString(msg.arg2) + " mm");
+                            sb_unp.setProgress(msg.arg2);
                         }
-                    };
-                    mTimer.schedule(playSounds, Constants.PAUSING_THRESHOLD);
+
+
+                    }
                 }
-            }
-        }
-    };
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,10 +142,17 @@ public class MainActivity extends AppCompatActivity {
         sb_com = findViewById(R.id.seekBar_com);
         tv_rec = findViewById(R.id.textView_rec);
         sb_rec = findViewById(R.id.seekBar_rec);
+        tv_cam = findViewById(R.id.textView_cam);
+        sb_cam = findViewById(R.id.seekBar_cam);
+        tv_unp = findViewById(R.id.textView_unp);
+        sb_unp = findViewById(R.id.seekBar_unp);
+
         audioHandler = new AudioSoundPlayer(getApplicationContext());
         final Button bt = findViewById(R.id.button);
         tv_com.setText("0 mm");
         tv_rec.setText("0 mm");
+        tv_cam.setText("0 mm");
+        tv_unp.setText("0 mm");
 
         /*Hard coding the relation between range and sound playing*/
         keys.add(new Key(1, 0, 12));
@@ -110,6 +163,21 @@ public class MainActivity extends AppCompatActivity {
         keys.add(new Key(6, 115, 135));
         keys.add(new Key(7, 135, 200));
 
+
+        tv_com.setOnClickListener(new View.OnClickListener() {
+            private boolean begined = false;
+
+            @Override
+            public void onClick(View view) {
+                if (begined) {
+                    begined = false;
+                    Stop(VOICE_COMMUNICATION);
+                } else {
+                    Begin(VOICE_COMMUNICATION);
+                    begined = true;
+                }
+            }
+        });
 
         tv_rec.setOnClickListener(new View.OnClickListener() {
             private boolean begined = false;
@@ -125,30 +193,56 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        tv_com.setOnClickListener(new View.OnClickListener() {
+
+        tv_cam.setOnClickListener(new View.OnClickListener() {
             private boolean begined = false;
 
             @Override
             public void onClick(View view) {
                 if (begined) {
                     begined = false;
-                    Stop(VOICE_COMMUNICATION);
+                    Stop(VOICE_CAMCORDER);
                 } else {
-                    Begin(VOICE_COMMUNICATION);
+                    Begin(VOICE_CAMCORDER);
                     begined = true;
                 }
             }
         });
+
+        tv_unp.setOnClickListener(new View.OnClickListener() {
+            private boolean begined = false;
+
+            @Override
+            public void onClick(View view) {
+                if (begined) {
+                    begined = false;
+                    Stop(VOICE_UNPROCESSED);
+                } else {
+                    Begin(VOICE_UNPROCESSED);
+                    begined = true;
+                }
+            }
+        });
+
     }
 
     public void refresh(int voice_source, int progress) {
         Message msg = new Message();
+        String source = "";
+
         if (voice_source == VOICE_COMMUNICATION) {
-            distance_communication = progress;
+            source = "VOICE_COMMUNICATION";
         } else if (voice_source == VOICE_RECOGNITION) {
-            distance_recognization = progress;
+            source = "VOICE_RECOGNITION";
+        } else if (voice_source == VOICE_CAMCORDER) {
+            source = "VOICE_CAMCORDER";
+        } else if (voice_source == VOICE_UNPROCESSED) {
+            source = "VOICE_UNPROCESSED";
         }
         msg.what = 0;
+        msg.arg1 = voice_source;
+        msg.arg2 = progress;
+        Log.e("Refresh", String.format("%s - %d", source, progress));
         handler.sendMessage(msg);
     }
 
@@ -198,4 +292,8 @@ public class MainActivity extends AppCompatActivity {
     public native int getVOICE_RECOGNITION();
 
     public native int getVOICE_COMMUNICATION();
+
+    public native int getVOICE_UNPROCESSED();
+
+    public native int getVOICE_CAMCORDER();
 }
