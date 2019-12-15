@@ -81,10 +81,10 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>setVolume</b>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>setMute</b> (int deviceID, int pathIndex, int channel, bool mute)</td></tr>
 <tr class="separator:ae2b16ffb54c7cc392b682de0a8710b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b88a09fd9f944141f1415eb9128dff2"><td class="memItemLeft" align="right" valign="top"><a id="a4b88a09fd9f944141f1415eb9128dff2"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>startIO</b> (int deviceID, int inputIOindex, int outputIOindex, SuperpoweredUSBAudioLatency latency, void *clientdata, SuperpoweredUSBAudioProcessingCallback callback)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>startIO</b> (int deviceID, int inputIOindex, int outputIOindex, SuperpoweredUSBAudioLatency latency, void *clientdata, SuperpoweredUSBAudioProcessingCallback performRender)</td></tr>
 <tr class="separator:a4b88a09fd9f944141f1415eb9128dff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24c6317b29104f2574af4e41fd22a95"><td class="memItemLeft" align="right" valign="top"><a id="aa24c6317b29104f2574af4e41fd22a95"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>easyIO</b> (int deviceID, int samplerate, int bitsPerSample, int numInputChannels, int numOutputChannels, SuperpoweredUSBAudioLatency latency, void *clientdata, SuperpoweredUSBAudioProcessingCallback callback)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>easyIO</b> (int deviceID, int samplerate, int bitsPerSample, int numInputChannels, int numOutputChannels, SuperpoweredUSBAudioLatency latency, void *clientdata, SuperpoweredUSBAudioProcessingCallback performRender)</td></tr>
 <tr class="separator:aa24c6317b29104f2574af4e41fd22a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a377fc4c8443164233a062e10b3511eba"><td class="memItemLeft" align="right" valign="top"><a id="a377fc4c8443164233a062e10b3511eba"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>stopIO</b> (int deviceID)</td></tr>

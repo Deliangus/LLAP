@@ -132,7 +132,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
           <td class="paramkey">audioProcessingCallback:</td>
           <td></td>
           <td class="paramtype">(audioProcessingCallback)&#160;</td>
-          <td class="paramname"><em>callback</em></td>
+          <td class="paramname"><em>performRender</em></td>
         </tr>
         <tr>
           <td class="paramkey">clientdata:</td>
@@ -153,9 +153,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
     <tr><td class="paramname">preferredBufferSize</td><td>The initial value for preferredBufferSizeMs. 12 is good for every iOS device (512 samples). </td></tr>
     <tr><td class="paramname">preferredMinimumSamplerate</td><td>The preferred minimum sample rate. 44100 or 48000 are recommended for good sound quality. </td></tr>
     <tr><td class="paramname">audioSessionCategory</td><td>The audio session category. Audio input is enabled for the appropriate categories only! </td></tr>
-    <tr><td class="paramname">channels</td><td>The number of channels in the audio processing callback. </td></tr>
-    <tr><td class="paramname">callback</td><td>The audio processing callback. </td></tr>
-    <tr><td class="paramname">clientdata</td><td>Custom data passed to the audio processing callback. </td></tr>
+    <tr><td class="paramname">channels</td><td>The number of channels in the audio processing performRender. </td></tr>
+    <tr><td class="paramname">performRender</td><td>The audio processing performRender. </td></tr>
+    <tr><td class="paramname">clientdata</td><td>Custom data passed to the audio processing performRender. </td></tr>
   </table>
   </dd>
 </dl>

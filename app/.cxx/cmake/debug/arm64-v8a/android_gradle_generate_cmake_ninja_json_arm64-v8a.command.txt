@@ -1,21 +1,21 @@
-Executable : /Users/erabbit/Library/Android/sdk/cmake/3.6.4111459/bin/cmake
+Executable : D:\AndroidSDK\cmake\3.6.4111459\bin\cmake.exe
 arguments : 
--H/Users/erabbit/Desktop/projects/LLAP/app
--B/Users/erabbit/Desktop/projects/LLAP/app/.cxx/cmake/debug/arm64-v8a
+-HD:\Project\LLAP\app
+-BD:\Project\LLAP\app\.cxx\cmake\debug\arm64-v8a
 -DANDROID_ABI=arm64-v8a
 -DANDROID_PLATFORM=android-21
--DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/erabbit/Desktop/projects/LLAP/app/build/intermediates/cmake/debug/obj/arm64-v8a
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=D:\Project\LLAP\app\build\intermediates\cmake\debug\obj\arm64-v8a
 -DCMAKE_BUILD_TYPE=Debug
--DANDROID_NDK=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499
+-DANDROID_NDK=D:\AndroidSDK\ndk\16.1.4479499
 -DCMAKE_C_FLAGS=-O3 -fsigned-char
--DCMAKE_CXX_FLAGS=-std=c++11 -fsigned-char -I/Users/erabbit/Desktop/projects/LLAP/app/superpowered
--DCMAKE_TOOLCHAIN_FILE=/Users/erabbit/Library/Android/sdk/ndk/16.1.4479499/build/cmake/android.toolchain.cmake
--DCMAKE_MAKE_PROGRAM=/Users/erabbit/Library/Android/sdk/cmake/3.6.4111459/bin/ninja
+-DCMAKE_CXX_FLAGS=-std=c++11 -fsigned-char -ID:/Project/LLAP/app/superpowered
+-DCMAKE_TOOLCHAIN_FILE=D:\AndroidSDK\ndk\16.1.4479499\build\cmake\android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=D:\AndroidSDK\cmake\3.6.4111459\bin\ninja.exe
 -GAndroid Gradle - Ninja
 -DANDROID_PLATFORM=android-16
 -DANDROID_TOOLCHAIN=clang
 -DANDROID_ARM_NEON=TRUE
 -DANDROID_STL=gnustl_static
--DPATH_TO_SUPERPOWERED:STRING=/Users/erabbit/Desktop/projects/LLAP/app/superpowered
+-DPATH_TO_SUPERPOWERED:STRING=D:/Project/LLAP/app/superpowered
 jvmArgs : 
 

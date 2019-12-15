@@ -1,3 +1,7 @@
+#include <SLES/OpenSLES.h>
+#include <SLES/OpenSLES_Android.h>
+#include <SLES/OpenSLES_AndroidConfiguration.h>
+
 #ifndef Header_SuperpoweredAndroidAudioIO
 #define Header_SuperpoweredAndroidAudioIO
 
@@ -13,7 +17,8 @@ struct SuperpoweredAndroidAudioIOInternals;
  @param numberOfSamples The number of samples received and/or requested.
  @param samplerate The current sample rate in Hz.
 */
-typedef bool (*audioProcessingCallback) (void *clientdata, short int *audioIO, int numberOfSamples, int samplerate);
+typedef bool (*audioProcessingCallback)(void *clientdata, short int *audioIO, int numberOfSamples,
+                                        int samplerate);
 
 /**
  @brief Easy handling of OpenSL ES audio input and/or output.
@@ -33,7 +38,11 @@ public:
  @param outputStreamType OpenSL ES stream type, such as SL_ANDROID_STREAM_MEDIA or SL_ANDROID_STREAM_VOICE. -1 means default. SLES/OpenSLES_AndroidConfiguration.h has them.
  @param latencySamples How many samples to have in the internal fifo buffer minimum. Works only when both input and output are enabled. Might help if you have many dropouts.
  */
-    SuperpoweredAndroidAudioIO(int samplerate, int buffersize, bool enableInput, bool enableOutput, audioProcessingCallback callback, void *clientdata, int inputStreamType = -1, int outputStreamType = -1, int latencySamples = 0);
+    SuperpoweredAndroidAudioIO(int samplerate, int buffersize, bool enableInput, bool enableOutput,
+                               audioProcessingCallback callback, void *clientdata,
+                               int inputStreamType = -1, int outputStreamType = -1,
+                               int latencySamples = 0);
+
     ~SuperpoweredAndroidAudioIO();
 
 /*
@@ -42,25 +51,60 @@ public:
   Calling this is important if you'd like to save battery. When there is no audio playing and the app goes to the background, it will automatically stop audio input and/or output.
 */
     void onForeground();
+
 /*
  @brief Call this in the main activity's onPause() method.
  
  Calling this is important if you'd like to save battery. When there is no audio playing and the app goes to the background, it will automatically stop audio input and/or output.
 */
     void onBackground();
+
 /*
  @brief Starts audio input and/or output.
 */
     void start();
+
 /*
  @brief Stops audio input and/or output.
 */
     void stop();
 
+public:
+    int readBufferIndex;
+    int writeBufferIndex;
+    int silenceSamples;
+    int samplerate;
+    int buffersize;
+    void *clientdata;
+    audioProcessingCallback performRender;
+    bool hasInput;
+    bool hasOutput;
+    bool foreground;
+    bool started;
+    short int *silence;
+    int latencySamples;
+    int numBuffers;
+    int bufferStep;
+    short int *fifobuffer;
+    SLObjectItf openSLEngine;
+    SLObjectItf outputMix;
+    SLObjectItf outputBufferQueue;
+    SLObjectItf inputBufferQueue;
+    SLAndroidSimpleBufferQueueItf outputBufferQueueInterface, inputBufferQueueInterface;
+
+
+    void stopQueues();
+
+    short int *InputCallBack();
+
+    short int *OutputCallBack();
+
+    void startQueues();
+
 private:
-    SuperpoweredAndroidAudioIOInternals *internals;
-    SuperpoweredAndroidAudioIO(const SuperpoweredAndroidAudioIO&);
-    SuperpoweredAndroidAudioIO& operator=(const SuperpoweredAndroidAudioIO&);
+    SuperpoweredAndroidAudioIO(const SuperpoweredAndroidAudioIO &);
+
+    SuperpoweredAndroidAudioIO &operator=(const SuperpoweredAndroidAudioIO &);
 };
 
 #endif

@@ -52,7 +52,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6d068f25169d582ed0978cdbcf65da95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_recorder.html#a6d068f25169d582ed0978cdbcf65da95">SuperpoweredRecorder</a> (const char *tempPath, unsigned int samplerate, unsigned int minSeconds=1, unsigned char numChannels=2, bool applyFade=false, SuperpoweredRecorderStoppedCallback callback=NULL, void *clientData=NULL)</td></tr>
+<tr class="memitem:a6d068f25169d582ed0978cdbcf65da95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_recorder.html#a6d068f25169d582ed0978cdbcf65da95">SuperpoweredRecorder</a> (const char *tempPath, unsigned int samplerate, unsigned int minSeconds=1, unsigned char numChannels=2, bool applyFade=false, SuperpoweredRecorderStoppedCallback performRender=NULL, void *clientData=NULL)</td></tr>
 <tr class="memdesc:a6d068f25169d582ed0978cdbcf65da95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a recorder instance.  <a href="#a6d068f25169d582ed0978cdbcf65da95">More...</a><br /></td></tr>
 <tr class="separator:a6d068f25169d582ed0978cdbcf65da95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8adf06a57c735691720a92a24e67402"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_recorder.html#aa8adf06a57c735691720a92a24e67402">start</a> (const char *destinationPath)</td></tr>
@@ -118,7 +118,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">SuperpoweredRecorderStoppedCallback&#160;</td>
-          <td class="paramname"><em>callback</em> = <code>NULL</code>, </td>
+          <td class="paramname"><em>performRender</em> = <code>NULL</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -141,8 +141,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">minSeconds</td><td>The minimum length of a recording. If the number of recorded seconds is lower, then a file will not be saved. </td></tr>
     <tr><td class="paramname">numChannels</td><td>The number of channels. </td></tr>
     <tr><td class="paramname">applyFade</td><td>If true, the recorder applies a fade-in at the beginning and a fade-out at the end of the recording. The fade is 64 samples long. </td></tr>
-    <tr><td class="paramname">callback</td><td>Called when the recorder finishes writing after <a class="el" href="class_superpowered_recorder.html#ab91723892859005472af7cc783ed743c" title="Stops recording. ">stop()</a>. </td></tr>
-    <tr><td class="paramname">clientData</td><td>A custom pointer your callback receives. </td></tr>
+    <tr><td class="paramname">performRender</td><td>Called when the recorder finishes writing after <a class="el" href="class_superpowered_recorder.html#ab91723892859005472af7cc783ed743c" title="Stops recording. ">stop()</a>. </td></tr>
+    <tr><td class="paramname">clientData</td><td>A custom pointer your performRender receives. </td></tr>
   </table>
   </dd>
 </dl>

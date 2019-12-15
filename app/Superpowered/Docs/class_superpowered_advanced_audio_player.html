@@ -55,7 +55,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6f08e74cacacfd61f32cd88967af399b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_advanced_audio_player.html#a6f08e74cacacfd61f32cd88967af399b">SuperpoweredAdvancedAudioPlayer</a> (void *clientData, SuperpoweredAdvancedAudioPlayerCallback callback, unsigned int sampleRate, unsigned char cachedPointCount, unsigned int internalBufferSizeSeconds=2, unsigned int negativeSeconds=0)</td></tr>
+<tr class="memitem:a6f08e74cacacfd61f32cd88967af399b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_advanced_audio_player.html#a6f08e74cacacfd61f32cd88967af399b">SuperpoweredAdvancedAudioPlayer</a> (void *clientData, SuperpoweredAdvancedAudioPlayerCallback performRender, unsigned int sampleRate, unsigned char cachedPointCount, unsigned int internalBufferSizeSeconds=2, unsigned int negativeSeconds=0)</td></tr>
 <tr class="memdesc:a6f08e74cacacfd61f32cd88967af399b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a player instance with the current sample rate value.  <a href="#a6f08e74cacacfd61f32cd88967af399b">More...</a><br /></td></tr>
 <tr class="separator:a6f08e74cacacfd61f32cd88967af399b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa89c18c1abe220991b73d64aef3e2bc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_advanced_audio_player.html#aa89c18c1abe220991b73d64aef3e2bc6">open</a> (const char *path, char **customHTTPHeaders=0)</td></tr>
@@ -398,7 +398,7 @@ static char *&#160;</td><td class="memItemRight" valign="bottom"><b>tempFolderPa
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">SuperpoweredAdvancedAudioPlayerCallback&#160;</td>
-          <td class="paramname"><em>callback</em>, </td>
+          <td class="paramname"><em>performRender</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -434,8 +434,8 @@ static char *&#160;</td><td class="memItemRight" valign="bottom"><b>tempFolderPa
 <p>Example: <a class="el" href="class_superpowered_advanced_audio_player.html" title="High performance advanced audio player with: ">SuperpoweredAdvancedAudioPlayer</a> player = new <a class="el" href="class_superpowered_advanced_audio_player.html" title="High performance advanced audio player with: ">SuperpoweredAdvancedAudioPlayer(this, playerCallback, 44100, 4)</a>;</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">clientData</td><td>A custom pointer your callback receives. </td></tr>
-    <tr><td class="paramname">callback</td><td>Your callback to receive player events. </td></tr>
+    <tr><td class="paramname">clientData</td><td>A custom pointer your performRender receives. </td></tr>
+    <tr><td class="paramname">performRender</td><td>Your performRender to receive player events. </td></tr>
     <tr><td class="paramname">sampleRate</td><td>The current sample rate. </td></tr>
     <tr><td class="paramname">cachedPointCount</td><td>Sets how many positions can be cached in the memory. Jumping to a cached point happens with 0 latency. Loops are automatically cached. </td></tr>
     <tr><td class="paramname">internalBufferSizeSeconds</td><td>The number of seconds to buffer internally for playback and cached points. Minimum 2, maximum 60. Default: 2. </td></tr>
