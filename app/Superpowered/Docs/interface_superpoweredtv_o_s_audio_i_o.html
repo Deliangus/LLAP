@@ -65,7 +65,7 @@ Instance Methods</h2></td></tr>
 (void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpoweredtv_o_s_audio_i_o.html#a24b24c5229a32812364fe96f54c4f404">stop</a></td></tr>
 <tr class="memdesc:a24b24c5229a32812364fe96f54c4f404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops audio processing. <br /></td></tr>
 <tr class="separator:a24b24c5229a32812364fe96f54c4f404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a519e4ad3665ed2ece64606eef0ffe7f5"><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpoweredtv_o_s_audio_i_o.html#a519e4ad3665ed2ece64606eef0ffe7f5">setProcessingCallback_C:clientdata:</a></td></tr>
+<tr class="memitem:a519e4ad3665ed2ece64606eef0ffe7f5"><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpoweredtv_o_s_audio_i_o.html#a519e4ad3665ed2ece64606eef0ffe7f5">setProcessingCallback_C:callbackData:</a></td></tr>
 <tr class="memdesc:a519e4ad3665ed2ece64606eef0ffe7f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the audio processing performRender to a C function, instead of the delegate's Objective-C method.  <a href="#a519e4ad3665ed2ece64606eef0ffe7f5">More...</a><br /></td></tr>
 <tr class="separator:a519e4ad3665ed2ece64606eef0ffe7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35ca6fceb20ec50ebc80862e1c256f2d"><td class="memItemLeft" align="right" valign="top"><a id="a35ca6fceb20ec50ebc80862e1c256f2d"></a>
@@ -157,7 +157,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inter
 </div>
 </div>
 <a id="a519e4ad3665ed2ece64606eef0ffe7f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a519e4ad3665ed2ece64606eef0ffe7f5">&#9670;&nbsp;</a></span>setProcessingCallback_C:clientdata:()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a519e4ad3665ed2ece64606eef0ffe7f5">&#9670;&nbsp;</a></span>setProcessingCallback_C:callbackData:()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,10 +169,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inter
           <td class="paramname"><em>performRender</em></td>
         </tr>
         <tr>
-          <td class="paramkey">clientdata:</td>
+          <td class="paramkey">callbackData:</td>
           <td></td>
           <td class="paramtype">(void *)&#160;</td>
-          <td class="paramname"><em>clientdata</em>&#160;</td>
+          <td class="paramname"><em>callbackData</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -185,7 +185,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inter
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">performRender</td><td>The performRender function. </td></tr>
-    <tr><td class="paramname">clientdata</td><td>Some custom pointer for the C processing performRender. You can set it to NULL. </td></tr>
+    <tr><td class="paramname">callbackData</td><td>Some custom pointer for the C processing performRender. You can set it to NULL. </td></tr>
   </table>
   </dd>
 </dl>

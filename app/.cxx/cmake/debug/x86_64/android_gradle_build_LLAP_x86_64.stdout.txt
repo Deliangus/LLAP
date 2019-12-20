@@ -1,0 +1,4 @@
+[1/4] Building CXX object CMakeFiles/LLAP.dir/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o
+[2/4] Building CXX object CMakeFiles/LLAP.dir/src/main/cpp/AudioController.cpp.o
+[3/4] Building CXX object CMakeFiles/LLAP.dir/src/main/cpp/RangeFinder.cpp.o
+[4/4] Linking CXX shared library ..\..\..\..\build\intermediates\cmake\debug\obj\x86_64\libLLAP.so

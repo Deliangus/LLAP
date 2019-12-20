@@ -11,9 +11,10 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_AndroidConfiguration.h>
 #include <android/log.h>
-#include "RangeFinder.h"
+
 #include <android/log.h>
 #include <jni.h>
+#include <clocale>
 //Record sample rate
 #define AUDIO_SAMPLE_RATE   48000
 //Start audio frequency
@@ -28,16 +29,22 @@
 
 //Speed adjust
 #define SPEED_ADJ           1.1
-#define LOG_TAG    "LLAP"
 #define DebugLog(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 
 
+
 class AudioController {
+    CallbackData callbackData;
 public:
-    RangeFinder*_myRangeFinder;
+    RangeFinder *_myRangeFinder;
+
     void init();
+
     void setUpAudio();
-    static bool performRender(void * __unused clientdata, short int *audioInputOutput, int numberOfSamples, int __unused samplerate);
+
+    static bool
+    performRender(CallbackData *__unused, short int *audioInputOutput, int numberOfSamples,
+                  int);
 };
 
 

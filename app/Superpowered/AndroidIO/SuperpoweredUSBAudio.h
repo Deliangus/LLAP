@@ -232,7 +232,7 @@ public:
      @param inputIOindex Input index.
      @param outputIOindex Output index.
      @param latency Latency (buffer size, low/mid/high).
-     @param clientdata Custom pointer for the performRender.
+     @param callbackData Custom pointer for the performRender.
      @param performRender The performRender to be called periodically.
      */
     static bool startIO(int deviceID, int inputIOindex, int outputIOindex, SuperpoweredUSBAudioLatency latency, void *clientdata, SuperpoweredUSBAudioProcessingCallback callback);
@@ -245,7 +245,7 @@ public:
      @param numInputChannels Preferred number of input channels. Set to 0 if you are not interested in audio input.
      @param numOutputChannels Preferred number of output channels. Set to 0 if you are not interested in audio output.
      @param latency Latency (buffer size, low/mid/high).
-     @param clientdata Custom pointer for the performRender.
+     @param callbackData Custom pointer for the performRender.
      @param performRender The performRender to be called periodically.
      */
     static bool easyIO(int deviceID, int samplerate, int bitsPerSample, int numInputChannels, int numOutputChannels, SuperpoweredUSBAudioLatency latency, void *clientdata, SuperpoweredUSBAudioProcessingCallback callback);

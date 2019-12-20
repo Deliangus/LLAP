@@ -65,7 +65,7 @@ Instance Methods</h2></td></tr>
 (void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpowered_o_s_x_audio_i_o.html#a2f09bf366927082a39a99e75a995a388">stop</a></td></tr>
 <tr class="memdesc:a2f09bf366927082a39a99e75a995a388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops audio processing. <br /></td></tr>
 <tr class="separator:a2f09bf366927082a39a99e75a995a388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5bc8e0f3ec890137737d95cebfc4d7f"><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpowered_o_s_x_audio_i_o.html#ae5bc8e0f3ec890137737d95cebfc4d7f">setProcessingCallback_C:clientdata:</a></td></tr>
+<tr class="memitem:ae5bc8e0f3ec890137737d95cebfc4d7f"><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpowered_o_s_x_audio_i_o.html#ae5bc8e0f3ec890137737d95cebfc4d7f">setProcessingCallback_C:callbackData:</a></td></tr>
 <tr class="memdesc:ae5bc8e0f3ec890137737d95cebfc4d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the audio processing performRender to a C function, instead of the delegate's Objective-C method.  <a href="#ae5bc8e0f3ec890137737d95cebfc4d7f">More...</a><br /></td></tr>
 <tr class="separator:ae5bc8e0f3ec890137737d95cebfc4d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -162,7 +162,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 </div>
 </div>
 <a id="ae5bc8e0f3ec890137737d95cebfc4d7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5bc8e0f3ec890137737d95cebfc4d7f">&#9670;&nbsp;</a></span>setProcessingCallback_C:clientdata:()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5bc8e0f3ec890137737d95cebfc4d7f">&#9670;&nbsp;</a></span>setProcessingCallback_C:callbackData:()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,10 +174,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
           <td class="paramname"><em>performRender</em></td>
         </tr>
         <tr>
-          <td class="paramkey">clientdata:</td>
+          <td class="paramkey">callbackData:</td>
           <td></td>
           <td class="paramtype">(void *)&#160;</td>
-          <td class="paramname"><em>clientdata</em>&#160;</td>
+          <td class="paramname"><em>callbackData</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -190,7 +190,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">performRender</td><td>The performRender function. </td></tr>
-    <tr><td class="paramname">clientdata</td><td>Some custom pointer for the C processing performRender. You can set it to NULL. </td></tr>
+    <tr><td class="paramname">callbackData</td><td>Some custom pointer for the C processing performRender. You can set it to NULL. </td></tr>
   </table>
   </dd>
 </dl>

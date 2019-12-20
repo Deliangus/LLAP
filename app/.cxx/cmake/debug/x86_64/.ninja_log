@@ -1,0 +1,5 @@
+# ninja log v5
+0	195	0	CMakeFiles/LLAP.dir/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp.o	cb817b0d938a14a7
+28	378	0	CMakeFiles/LLAP.dir/src/main/cpp/AudioController.cpp.o	bba879da7cb8388e
+56	395	0	CMakeFiles/LLAP.dir/src/main/cpp/RangeFinder.cpp.o	71388ed7fd9763d1
+395	555	0	../../../../build/intermediates/cmake/debug/obj/x86_64/libLLAP.so	bc7e8b1f87ab9bb7

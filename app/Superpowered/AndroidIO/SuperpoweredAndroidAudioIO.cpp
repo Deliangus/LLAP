@@ -8,9 +8,6 @@
 #include <cstring>
 #include <android/log.h>
 
-#define LOG_TAG "System.out"
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
 #define NUM_CHANNELS 1
 
@@ -19,9 +16,7 @@ short int *SuperpoweredAndroidAudioIO::InputCallBack() {
     LOGD("InputCallBack - 19 %d %d", writeBufferIndex, readBufferIndex);
 
     short int *buffer = fifobuffer + writeBufferIndex * bufferStep;
-    if (writeBufferIndex < numBuffers - 1)
-        writeBufferIndex++;
-    else writeBufferIndex = 0;
+    writeBufferIndex = (writeBufferIndex + 1) % numBuffers;
 
     LOGD("InputCallBack - 25 %d %d", writeBufferIndex, readBufferIndex);
 
@@ -34,15 +29,13 @@ short int *SuperpoweredAndroidAudioIO::InputCallBack() {
 
             LOGD("InputCallBack - 34");
 
-            performRender(clientdata,
+            performRender(callbackData,
                           fifobuffer + readBufferIndex * bufferStep,
                           buffersize, samplerate);
 
             LOGD("InputCallBack - 41");
 
-            if (readBufferIndex < numBuffers - 1)
-                readBufferIndex++;
-            else readBufferIndex = 0;
+            readBufferIndex = (readBufferIndex + 1) % numBuffers;
         };
     }
 
@@ -89,8 +82,7 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
 
     int buffersAvailable = writeBufferIndex - readBufferIndex;
     if (buffersAvailable < 0)
-        buffersAvailable = numBuffers -
-                           (readBufferIndex - writeBufferIndex);
+        buffersAvailable = numBuffers - readBufferIndex + writeBufferIndex;
     short int *output = fifobuffer + readBufferIndex * bufferStep;
 
     LOGD("OutputCallBack - 94 %d %d", writeBufferIndex, readBufferIndex);
@@ -101,8 +93,17 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
             latencySamples) { // if we have enough audio input available
 
             LOGD("OutputCallBack - 102");
+            if (callbackData == nullptr) {
+                LOGD("callbackData Null");
+            }
+            LOGD("OutputCallBack - 102");
+            if (output == nullptr) {
+                LOGD("output Null");
+            }
+            LOGD("OutputCallBack - 106");
 
-            if (!performRender(clientdata, output, buffersize, samplerate)) {
+
+            if (!performRender(callbackData, output, buffersize, samplerate)) {
                 memset(output, 0, (size_t) buffersize * NUM_CHANNELS * 2);
                 silenceSamples += buffersize;
             } else silenceSamples = 0;
@@ -115,7 +116,7 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
 
         LOGD("OutputCallBack - 115");
 
-        if (!performRender(clientdata, audioToGenerate, buffersize,
+        if (!performRender(callbackData, audioToGenerate, buffersize,
                            samplerate)) {
             memset(audioToGenerate, 0, (size_t) buffersize * NUM_CHANNELS * 2);
             silenceSamples += buffersize;
@@ -123,9 +124,8 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
 
         LOGD("OutputCallBack - 123");
 
-        if (writeBufferIndex < numBuffers - 1)
-            writeBufferIndex++;
-        else writeBufferIndex = 0;
+        writeBufferIndex = (writeBufferIndex + 1) % numBuffers;
+
         if ((buffersAvailable + 1) * buffersize < latencySamples)
             output = NULL; // dropout, not enough audio generated
     };
@@ -133,12 +133,12 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
     LOGD("OutputCallBack - 130");
 
     if (output) {
-        if (readBufferIndex < numBuffers - 1)
-            readBufferIndex++;
-        else readBufferIndex = 0;
+        readBufferIndex = (readBufferIndex + 1) % numBuffers;
     };
 
     return output;
+
+
 }
 
 // This is called periodically by the input audio queue. Audio input is received from the media server at this point.
@@ -167,8 +167,9 @@ static void SuperpoweredAndroidAudioIO_OutputCallback(
 
 SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffersize,
                                                        bool enableInput, bool enableOutput,
-                                                       audioProcessingCallback callback,
-                                                       void *clientdata, int inputStreamType,
+                                                       AudioContrllerPerformRender performRender,
+                                                       CallbackData *callbackData,
+                                                       int inputStreamType,
                                                        int outputStreamType, int latencySamples) {
     static const SLboolean requireds[2] = {SL_BOOLEAN_TRUE, SL_BOOLEAN_FALSE};
 
@@ -177,8 +178,8 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     silenceSamples = 0;
     this->samplerate = samplerate;
     this->buffersize = buffersize;
-    this->clientdata = clientdata;
-    this->performRender = callback;
+    this->callbackData = callbackData;
+    this->performRender = performRender;
     hasInput = enableInput;
     hasOutput = enableOutput;
     foreground = true;

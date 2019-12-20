@@ -55,7 +55,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Instance Methods</h2></td></tr>
-<tr class="memitem:aa10908699a8ddb3a7d049f78d863017e"><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpowered_i_o_s_audio_i_o.html#aa10908699a8ddb3a7d049f78d863017e">initWithDelegate:preferredBufferSize:preferredMinimumSamplerate:audioSessionCategory:channels:audioProcessingCallback:clientdata:</a></td></tr>
+<tr class="memitem:aa10908699a8ddb3a7d049f78d863017e"><td class="memItemLeft" align="right" valign="top">(id)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpowered_i_o_s_audio_i_o.html#aa10908699a8ddb3a7d049f78d863017e">initWithDelegate:preferredBufferSize:preferredMinimumSamplerate:audioSessionCategory:channels:audioProcessingCallback:callbackData:</a></td></tr>
 <tr class="memdesc:aa10908699a8ddb3a7d049f78d863017e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the audio output instance.  <a href="#aa10908699a8ddb3a7d049f78d863017e">More...</a><br /></td></tr>
 <tr class="separator:aa10908699a8ddb3a7d049f78d863017e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe7f8d2097684b5f0db47c3eaaa216f9"><td class="memItemLeft" align="right" valign="top">(bool)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_superpowered_i_o_s_audio_i_o.html#abe7f8d2097684b5f0db47c3eaaa216f9">start</a></td></tr>
@@ -93,7 +93,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
 <div class="textblock"><dl class="section warning"><dt>Warning</dt><dd>All methods and setters should be called on the main thread only! </dd></dl>
 </div><h2 class="groupheader">Method Documentation</h2>
 <a id="aa10908699a8ddb3a7d049f78d863017e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa10908699a8ddb3a7d049f78d863017e">&#9670;&nbsp;</a></span>initWithDelegate:preferredBufferSize:preferredMinimumSamplerate:audioSessionCategory:channels:audioProcessingCallback:clientdata:()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa10908699a8ddb3a7d049f78d863017e">&#9670;&nbsp;</a></span>initWithDelegate:preferredBufferSize:preferredMinimumSamplerate:audioSessionCategory:channels:audioProcessingCallback:callbackData:()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,10 +135,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
           <td class="paramname"><em>performRender</em></td>
         </tr>
         <tr>
-          <td class="paramkey">clientdata:</td>
+          <td class="paramkey">callbackData:</td>
           <td></td>
           <td class="paramtype">(void *)&#160;</td>
-          <td class="paramname"><em>clientdata</em>&#160;</td>
+          <td class="paramname"><em>callbackData</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -155,7 +155,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inte
     <tr><td class="paramname">audioSessionCategory</td><td>The audio session category. Audio input is enabled for the appropriate categories only! </td></tr>
     <tr><td class="paramname">channels</td><td>The number of channels in the audio processing performRender. </td></tr>
     <tr><td class="paramname">performRender</td><td>The audio processing performRender. </td></tr>
-    <tr><td class="paramname">clientdata</td><td>Custom data passed to the audio processing performRender. </td></tr>
+    <tr><td class="paramname">callbackData</td><td>Custom data passed to the audio processing performRender. </td></tr>
   </table>
   </dd>
 </dl>

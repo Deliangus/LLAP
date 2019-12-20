@@ -53,7 +53,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1489673288243f89fbaae7ab8e695d25"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_u_s_b_system.html#a1489673288243f89fbaae7ab8e695d25">initialize</a> (void *clientdata, SuperpoweredUSBAudioDeviceConnectedCallback c0, SuperpoweredUSBAudioDeviceDisconnectedCallback c1, SuperpoweredUSBMIDIDeviceConnectedCallback c2, SuperpoweredUSBMIDIDeviceDisconnectedCallback c3)</td></tr>
+<tr class="memitem:a1489673288243f89fbaae7ab8e695d25"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_superpowered_u_s_b_system.html#a1489673288243f89fbaae7ab8e695d25">initialize</a> (void *callbackData, SuperpoweredUSBAudioDeviceConnectedCallback c0, SuperpoweredUSBAudioDeviceDisconnectedCallback c1, SuperpoweredUSBMIDIDeviceConnectedCallback c2, SuperpoweredUSBMIDIDeviceDisconnectedCallback c3)</td></tr>
 <tr class="memdesc:a1489673288243f89fbaae7ab8e695d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Superpowered USB system and set up native connection management callbacks.  <a href="#a1489673288243f89fbaae7ab8e695d25">More...</a><br /></td></tr>
 <tr class="separator:a1489673288243f89fbaae7ab8e695d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99ce1be23bdca610cf2db6925628dccd"><td class="memItemLeft" align="right" valign="top"><a id="a99ce1be23bdca610cf2db6925628dccd"></a>
@@ -87,7 +87,7 @@ static SuperpoweredUSBSystemInternals *&#160;</td><td class="memItemRight" valig
           <td class="memname">static void SuperpoweredUSBSystem::initialize </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>clientdata</em>, </td>
+          <td class="paramname"><em>callbackData</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -128,7 +128,7 @@ static SuperpoweredUSBSystemInternals *&#160;</td><td class="memItemRight" valig
 <p>It's very lightweight in memory and consumes no CPU. Call this only once in an app's lifecycle. Don't initialize/destroy <a class="el" href="class_superpowered_u_s_b_system.html" title="This class manages USB device connections. ">SuperpoweredUSBSystem</a> more than once.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">clientdata</td><td>Some custom pointer you set for the callbacks. </td></tr>
+    <tr><td class="paramname">callbackData</td><td>Some custom pointer you set for the callbacks. </td></tr>
     <tr><td class="paramname">c0</td><td>Called when a USB audio device is connected. Can be NULL. </td></tr>
     <tr><td class="paramname">c1</td><td>Called when a USB audio device is disconnected. Can be NULL. </td></tr>
     <tr><td class="paramname">c2</td><td>Called when a MIDI audio device is connected. Can be NULL. </td></tr>

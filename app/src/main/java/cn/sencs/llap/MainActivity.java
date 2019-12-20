@@ -2,14 +2,13 @@ package cn.sencs.llap;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -17,25 +16,29 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
+    static {
+        System.loadLibrary("LLAP");
+    }
+
+    private final String TAG = "llap";
     private SeekBar sb;
     private TextView tv;
     private int distance;
     private AudioSoundPlayer audioHandler;
     private ArrayList<Key> keys = new ArrayList<>();
-    private final String TAG = "llap";
     private Timer mTimer = new Timer();
     private ArrayList<Key> waitingQueues = new ArrayList<>();
-
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what==0){
-                tv.setText(Integer.toString(distance)+" mm");
+            if (msg.what == 0) {
+                tv.setText(Integer.toString(distance) + " mm");
                 sb.setProgress(distance);
+
                 /* Judging if this is a pressdown on the key*/
+                /*
                 final Key curKey = keyForDistance(distance);
                 Log.d(TAG, "key: " + curKey.sound);
                 TimerTask playSounds = new EnhancedTimerTask(curKey) {
@@ -54,13 +57,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
                 mTimer.schedule(playSounds, Constants.PAUSING_THRESHOLD);
+                */
             }
         }
     };
-
-    static {
-        System.loadLibrary("LLAP");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tv = (TextView) findViewById(R.id.textView);
-        sb = (SeekBar)findViewById(R.id.seekBar);
+        sb = (SeekBar) findViewById(R.id.seekBar);
         audioHandler = new AudioSoundPlayer(getApplicationContext());
-        final Button bt = (Button)findViewById(R.id.button);
+        final Button bt = (Button) findViewById(R.id.button);
         tv.setText("0 mm");
 
         /*Hard coding the relation between range and sound playing*/
@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void refresh(int progress){
-        Message msg=new Message();
+    public void refresh(int progress) {
+        Message msg = new Message();
         distance = progress;
-        msg.what=0;
+        msg.what = 0;
         handler.sendMessage(msg);
     }
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> toApplyList = new ArrayList<String>();
 
-        for (String perm :permissions){
+        for (String perm : permissions) {
             if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
                 toApplyList.add(perm);
                 //进入到这里代表没有权限.
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         String tmpList[] = new String[toApplyList.size()];
-        if (!toApplyList.isEmpty()){
+        if (!toApplyList.isEmpty()) {
             ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
         }
     }
@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private Key keyForDistance(int distance){
-        for (Key k : keys){
-            if (distance < k.end && distance >= k.start){
+    private Key keyForDistance(int distance) {
+        for (Key k : keys) {
+            if (distance < k.end && distance >= k.start) {
                 return k;
             }
         }

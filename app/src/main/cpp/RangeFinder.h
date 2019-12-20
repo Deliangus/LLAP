@@ -32,53 +32,58 @@
 //dc_trend threshold
 #define DC_TREND                0.25
 
-class RangeFinder
-{
+class RangeFinder {
 public:
-    RangeFinder( uint32_t inMaxFramesPerSlice, uint32_t inNumFreqs, float inStartFreq, float inFreqInterv );
+    RangeFinder(uint32_t inMaxFramesPerSlice, uint32_t inNumFreqs, float inStartFreq,
+                float inFreqInterv);
+
     ~RangeFinder();
 
 
-    int16_t*        GetPlayBuffer(uint32_t inSamples);
-    int16_t*        GetRecDataBuffer(uint32_t inSamples);
-    float         GetDistanceChange(void);
+    int16_t *GetPlayBuffer(uint32_t inSamples);
+
+    int16_t *GetRecDataBuffer(uint32_t inSamples);
+
+    float GetDistanceChange(void);
 
 
 private:
-    void            InitBuffer();
-    void            GetBaseBand();
-    void            RemoveDC();
-    float         CalculateDistance();
+    void InitBuffer();
+
+    void GetBaseBand();
+
+    void RemoveDC();
+
+    float CalculateDistance();
 
 
-    uint32_t          mNumFreqs;//number of frequency
-    uint32_t          mCurPlayPos;//current play position
-    uint32_t          mCurProcPos;//current process position
-    uint32_t          mCurRecPos;//current receive position
-    uint32_t          mLastCICPos;//last cic filter position
-    uint32_t          mBufferSize;//buffer size
-    uint32_t          mRecDataSize;//receive data size
-    uint32_t          mDecsize;//buffer size after decimation
-    float         mFreqInterv;//frequency interval
-    float         mSoundSpeed;//sound speed
-    float         mFreqs[MAX_NUM_FREQS];//frequency of the ultsound signal
-    float         mWaveLength[MAX_NUM_FREQS];//wave length of the ultsound signal
+    uint32_t mNumFreqs;//number of frequency
+    uint32_t mCurPlayPos;//current play position
+    uint32_t mCurProcPos;//current process position
+    uint32_t mCurRecPos;//current receive position
+    uint32_t mLastCICPos;//last cic filter position
+    uint32_t mBufferSize;//buffer size
+    uint32_t mRecDataSize;//receive data size
+    uint32_t mDecsize;//buffer size after decimation
+    float mFreqInterv;//frequency interval
+    float mSoundSpeed;//sound speed
+    float mFreqs[MAX_NUM_FREQS];//frequency of the ultsound signal
+    float mWaveLength[MAX_NUM_FREQS];//wave length of the ultsound signal
 
-    int16_t*        mPlayBuffer;
-    int16_t*        mRecDataBuffer;
-    float*        mFRecDataBuffer;
-    float*        mSinBuffer[MAX_NUM_FREQS];
-    float*        mCosBuffer[MAX_NUM_FREQS];
-    float*        mBaseBandReal[MAX_NUM_FREQS];
-    float*        mBaseBandImage[MAX_NUM_FREQS];
-    float*        mTempBuffer;
-    float*        mCICBuffer[MAX_NUM_FREQS][CIC_SEC][2];
-    float         mDCValue[2][MAX_NUM_FREQS];
-    float         mMaxValue[2][MAX_NUM_FREQS];
-    float         mMinValue[2][MAX_NUM_FREQS];
-    float         mFreqPower[MAX_NUM_FREQS];
+    int16_t *mPlayBuffer;
+    int16_t *mRecDataBuffer;
+    float *mFRecDataBuffer;
+    float *mSinBuffer[MAX_NUM_FREQS];
+    float *mCosBuffer[MAX_NUM_FREQS];
+    float *mBaseBandReal[MAX_NUM_FREQS];
+    float *mBaseBandImage[MAX_NUM_FREQS];
+    float *mTempBuffer;
+    float *mCICBuffer[MAX_NUM_FREQS][CIC_SEC][2];
+    float mDCValue[2][MAX_NUM_FREQS];
+    float mMaxValue[2][MAX_NUM_FREQS];
+    float mMinValue[2][MAX_NUM_FREQS];
+    float mFreqPower[MAX_NUM_FREQS];
 };
-
 
 
 #endif //LLAP_RANGEFINDER_H

@@ -1,24 +1,33 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 #include <SLES/OpenSLES_AndroidConfiguration.h>
+#include <clocale>
+#include "../../src/main/cpp/RangeFinder.h"
 
 #ifndef Header_SuperpoweredAndroidAudioIO
+
 #define Header_SuperpoweredAndroidAudioIO
+
+#define LOG_TAG "System.out"
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
 struct SuperpoweredAndroidAudioIOInternals;
 
-/**
- @brief This is the prototype of an audio processing callback function.
+struct CallbackData {
+    RangeFinder *rangeFinder;
+    uint64_t mtime;
+    uint64_t mUIUpdateTime;
+    float distance;
+    float distancechange;
 
- If the application requires both audio input and audio output, this callback is called once (there is no separate audio input and audio output callback). Audio input is available in audioIO, and the application should change it's contents for audio output.
+    CallbackData() : rangeFinder(NULL), mtime(0), mUIUpdateTime(0), distance(0),
+                     distancechange(0) {}
+};
 
- @param clientdata A custom pointer your callback receives.
- @param audioIO 16-bit stereo interleaved audio input and/or output.
- @param numberOfSamples The number of samples received and/or requested.
- @param samplerate The current sample rate in Hz.
-*/
-typedef bool (*audioProcessingCallback)(void *clientdata, short int *audioIO, int numberOfSamples,
-                                        int samplerate);
+typedef bool (*AudioContrllerPerformRender)(void *clientdata, short int *audioIO,
+                                            int numberOfSamples,
+                                            int samplerate);
 
 /**
  @brief Easy handling of OpenSL ES audio input and/or output.
@@ -38,10 +47,10 @@ public:
  @param outputStreamType OpenSL ES stream type, such as SL_ANDROID_STREAM_MEDIA or SL_ANDROID_STREAM_VOICE. -1 means default. SLES/OpenSLES_AndroidConfiguration.h has them.
  @param latencySamples How many samples to have in the internal fifo buffer minimum. Works only when both input and output are enabled. Might help if you have many dropouts.
  */
-    SuperpoweredAndroidAudioIO(int samplerate, int buffersize, bool enableInput, bool enableOutput,
-                               audioProcessingCallback callback, void *clientdata,
-                               int inputStreamType = -1, int outputStreamType = -1,
-                               int latencySamples = 0);
+    SuperpoweredAndroidAudioIO(int samplerate, int buffersize, bool enableInput,
+                               bool enableOutput, AudioContrllerPerformRender performRender,
+                               CallbackData *callbackData, int inputStreamType = -1,
+                               int outputStreamType = -1, int latencySamples = 0);
 
     ~SuperpoweredAndroidAudioIO();
 
@@ -75,11 +84,11 @@ public:
     int silenceSamples;
     int samplerate;
     int buffersize;
-    void *clientdata;
-    audioProcessingCallback performRender;
+    CallbackData *callbackData;
     bool hasInput;
     bool hasOutput;
     bool foreground;
+    AudioContrllerPerformRender performRender;
     bool started;
     short int *silence;
     int latencySamples;

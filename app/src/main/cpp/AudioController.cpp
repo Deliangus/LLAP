@@ -12,20 +12,11 @@
 #include <thread>
 
 jmethodID gOnNativeID;
-JNIEnv* genv;
+JNIEnv *genv;
 jobject mObject;
 jclass mClass;
-JavaVM* gs_jvm;
+JavaVM *gs_jvm;
 
-struct CallbackData {
-    RangeFinder *rangeFinder;
-    uint64_t mtime;
-    uint64_t mUIUpdateTime;
-    float distance;
-    float distancechange;
-
-    CallbackData() : rangeFinder(NULL), mtime(0), mUIUpdateTime(0), distance(0), distancechange(0){}
-} cd;
 
 int64_t getTimeNsec() {
     timespec now;
@@ -34,53 +25,71 @@ int64_t getTimeNsec() {
 }
 
 
-bool AudioController::performRender(void *__unused clientdata, short int *audioInputOutput,
+bool AudioController::performRender(CallbackData *clientdata, short int *audioInputOutput,
                                     int inNumberFrames, int __unused samplerate) {
-    CallbackData *cd = (CallbackData *) clientdata;
 
+    LOGD("performRender 31");
+    CallbackData *callbackData = clientdata;
+    RangeFinder *rangeFinder = callbackData->rangeFinder;
 //    float distancechange;
+    LOGD("performRender 32");
+
     uint64_t startTime = (uint64_t) getTimeNsec();
+    LOGD("performRender 35");
+
 //    DebugLog("start   %d",int(startTime/1e6));
 //    DebugLog("%d %d %d", int(audioInputOutput[0]),int(audioInputOutput[1]),int(audioInputOutput[2]));
 
 
 
 
-    memcpy((void *) cd->rangeFinder->GetRecDataBuffer(inNumberFrames), (void *) audioInputOutput,
+    memcpy((void *) rangeFinder->GetRecDataBuffer(inNumberFrames),
+           (void *) audioInputOutput,
            sizeof(int16_t) * inNumberFrames);
 
-    cd->distancechange = cd->rangeFinder->GetDistanceChange();
+    LOGD("performRender 47");
 
-    cd->distance = (float) (cd->distance + cd->distancechange * SPEED_ADJ);
+    callbackData->distancechange = rangeFinder->GetDistanceChange();
 
-    if (cd->distance < 0) {
-        cd->distance = 0;
+    LOGD("performRender 51");
+
+    callbackData->distance = (float) (callbackData->distance +
+                                      callbackData->distancechange * SPEED_ADJ);
+
+    LOGD("performRender 56");
+
+    if (callbackData->distance < 0) {
+        callbackData->distance = 0;
     }
-    if (cd->distance > 500) {
-        cd->distance = 500;
+    if (callbackData->distance > 500) {
+        callbackData->distance = 500;
     }
 
+    LOGD("performRender 65");
 
-
-    memcpy((void *) audioInputOutput, (void *) cd->rangeFinder->GetPlayBuffer(inNumberFrames),
+    memcpy((void *) audioInputOutput,
+           (void *) rangeFinder->GetPlayBuffer(inNumberFrames),
            sizeof(int16_t) * inNumberFrames);
 
-    cd->mtime = startTime;
+    LOGD("performRender 71");
 
-    if (fabs(cd->distancechange) > 0.06 && (startTime - cd->mUIUpdateTime) / 1.0e6 > 10) {
-//        DebugLog("distance: %f", cd->distance* SPEED_ADJ);
+    callbackData->mtime = startTime;
+
+    if (fabs(callbackData->distancechange) > 0.06 &&
+        (startTime - callbackData->mUIUpdateTime) / 1.0e6 > 10) {
+//        DebugLog("distance: %f", callbackData->distance* SPEED_ADJ);
 //        env->CallVoidMethod(instance,method,distancechange);
-//        cd->audioController->env->CallVoidMethod(cd->audioController->instance,cd->audioController->method,int(cd->distance));
+//        callbackData->audioController->env->CallVoidMethod(callbackData->audioController->instance,callbackData->audioController->method,int(callbackData->distance));
 //            [[NSNotificationCenter defaultCenter] postNotificationName:@"AudioDisUpdate" object:nil];
-//        cd->audioController->audiodistance=cd->distance;
-//        DebugLog("Distance: %f", cd->distance);
+//        callbackData->audioController->audiodistance=callbackData->distance;
+//        DebugLog("Distance: %f", callbackData->distance);
 //        genv->CallVoidMethod(mObject,gOnNativeID,400);
         JNIEnv *env;
-        if((*gs_jvm).AttachCurrentThread(&env, NULL)<0){
-        } else{
-            (*env).CallVoidMethod(mObject,gOnNativeID,int(cd->distance));
+        if ((*gs_jvm).AttachCurrentThread(&env, NULL) < 0) {
+        } else {
+            (*env).CallVoidMethod(mObject, gOnNativeID, int(callbackData->distance));
         }
-        cd->mUIUpdateTime = startTime;
+        callbackData->mUIUpdateTime = startTime;
     }
 
     return true;
@@ -95,10 +104,12 @@ void AudioController::init() {
 void AudioController::setUpAudio() {
     DebugLog("setUpAudio");
     _myRangeFinder = new RangeFinder(MAX_FRAME_SIZE, NUM_FREQ, START_FREQ, FREQ_INTERVAL);
-    cd.rangeFinder = _myRangeFinder;
+
+    callbackData.rangeFinder = _myRangeFinder;
     SuperpoweredCPU::setSustainedPerformanceMode(true);
-    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE , true, true, performRender,
-                                   &cd, -1, SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE *2);
+    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true,
+                                   (AudioContrllerPerformRender) performRender,
+                                   &callbackData, -1, SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);
 
 }
 
@@ -106,16 +117,14 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_cn_sencs_llap_MainActivity_Begin(JNIEnv *env, jobject instance) {
     jclass clazz = (*env).FindClass("cn/sencs/llap/MainActivity");
-    if(clazz==NULL)
-    {
+    if (clazz == NULL) {
         DebugLog("clazz IS NULL................");
         return;
     }
 
-    mObject = (jobject)(*env).NewGlobalRef(instance);
+    mObject = (jobject) (*env).NewGlobalRef(instance);
     gOnNativeID = (*env).GetMethodID(clazz, "refresh", "(I)V");
-    if(gOnNativeID==NULL)
-    {
+    if (gOnNativeID == NULL) {
         DebugLog("gOnNativeID IS NULL................");
         return;
     }
