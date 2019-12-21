@@ -82,16 +82,12 @@ short int *SuperpoweredAndroidAudioIO::InputCallBack() {
         if (buffersAvailable * buffersize >=
             latencySamples) { // if we have enough audio input available
 
-
-
             performRender(fifobuffer + readBufferIndex * bufferStep,
                           buffersize, samplerate);
-
 
             readBufferIndex = (readBufferIndex + 1) % numBuffers;
         };
     }
-
 
 
     return buffer;
@@ -175,7 +171,6 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
 }
 
 
-
 // This is called periodically by the output audio queue. Audio for the user should be provided here.
 static void SuperpoweredAndroidAudioIO_OutputCallback(
         SLAndroidSimpleBufferQueueItf caller, void *pContext) {
@@ -208,7 +203,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     rangeFinder = rgF;
     this->samplerate = samplerate;
     this->buffersize = buffersize;
-    this->audioContrllerPerformRender = ACTperformRender;
+    audioContrllerPerformRender = ACTperformRender;
     hasInput = enableInput;
     hasOutput = enableOutput;
     foreground = true;

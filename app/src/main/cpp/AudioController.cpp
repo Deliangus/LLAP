@@ -18,11 +18,7 @@ jclass mClass;
 JavaVM *gs_jvm;
 
 
-
-
 bool AudioController::performRender(double distance) {
-
-
 
     if (distance < 0) {
         distance = 0;
@@ -30,7 +26,6 @@ bool AudioController::performRender(double distance) {
     if (distance > 500) {
         distance = 500;
     }
-
 
     JNIEnv *env;
     if ((*gs_jvm).AttachCurrentThread(&env, NULL) < 0) {
@@ -55,7 +50,13 @@ void AudioController::setUpAudio() {
 
     new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true,
                                    (AudioContrllerPerformRender) performRender,
-                                   rangeFinder, -1, SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);
+                                   rangeFinder, SL_ANDROID_RECORDING_PRESET_CAMCORDER,
+                                   SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);
+
+    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true,
+                                   (AudioContrllerPerformRender) performRender,
+                                   rangeFinder, SL_ANDROID_RECORDING_PRESET_CAMCORDER,
+                                   SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);
 
 }
 
