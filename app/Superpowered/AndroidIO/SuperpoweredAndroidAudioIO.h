@@ -7,6 +7,8 @@
 #ifndef Header_SuperpoweredAndroidAudioIO
 
 #define Header_SuperpoweredAndroidAudioIO
+//Speed adjust
+#define SPEED_ADJ           1.1
 
 #define LOG_TAG "System.out"
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
@@ -14,20 +16,7 @@
 
 struct SuperpoweredAndroidAudioIOInternals;
 
-struct CallbackData {
-    RangeFinder *rangeFinder;
-    uint64_t mtime;
-    uint64_t mUIUpdateTime;
-    float distance;
-    float distancechange;
-
-    CallbackData() : rangeFinder(NULL), mtime(0), mUIUpdateTime(0), distance(0),
-                     distancechange(0) {}
-};
-
-typedef bool (*AudioContrllerPerformRender)(void *clientdata, short int *audioIO,
-                                            int numberOfSamples,
-                                            int samplerate);
+typedef bool (*AudioContrllerPerformRender)(double);
 
 /**
  @brief Easy handling of OpenSL ES audio input and/or output.
@@ -49,8 +38,9 @@ public:
  */
     SuperpoweredAndroidAudioIO(int samplerate, int buffersize, bool enableInput,
                                bool enableOutput, AudioContrllerPerformRender performRender,
-                               CallbackData *callbackData, int inputStreamType = -1,
-                               int outputStreamType = -1, int latencySamples = 0);
+                               RangeFinder *rgF, int inputStreamType = -1,
+                               int outputStreamType = -1,
+                               int latencySamples = 0);
 
     ~SuperpoweredAndroidAudioIO();
 
@@ -78,17 +68,20 @@ public:
 */
     void stop();
 
+    bool performRender(short int *audioInputOutput,
+                       int inNumberFrames, int __unused samplerate);
+
 public:
     int readBufferIndex;
     int writeBufferIndex;
     int silenceSamples;
     int samplerate;
     int buffersize;
-    CallbackData *callbackData;
+
     bool hasInput;
     bool hasOutput;
     bool foreground;
-    AudioContrllerPerformRender performRender;
+    AudioContrllerPerformRender audioContrllerPerformRender;
     bool started;
     short int *silence;
     int latencySamples;
@@ -101,6 +94,11 @@ public:
     SLObjectItf inputBufferQueue;
     SLAndroidSimpleBufferQueueItf outputBufferQueueInterface, inputBufferQueueInterface;
 
+    RangeFinder *rangeFinder;
+    uint64_t mtime;
+    uint64_t mUIUpdateTime;
+    float distance;
+    float distancechange;
 
     void stopQueues();
 

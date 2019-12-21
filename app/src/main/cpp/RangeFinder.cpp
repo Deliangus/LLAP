@@ -44,12 +44,9 @@ RangeFinder::RangeFinder(uint32_t inMaxFramesPerSlice, uint32_t inNumFreq, float
 
     mPlayBuffer = (int16_t *) calloc(2 * inMaxFramesPerSlice, sizeof(int16_t));
 
-    LOGD("Assign mRecDataBuffer");
     mRecDataBuffer = (int16_t *) calloc(mRecDataSize, sizeof(int16_t));
-    if (mRecDataBuffer == nullptr) {
-        LOGD("mRecDataBuffer is null - RangeFinder 49");
-    }
-    //LOGD("Assigned mRecDataBuffer %d", (int) mRecDataBuffer);
+
+
     mFRecDataBuffer = (float *) calloc(mRecDataSize, sizeof(float));
     mTempBuffer = (float *) calloc(mRecDataSize, sizeof(float));
     mCurPlayPos = 0;
@@ -63,7 +60,7 @@ RangeFinder::RangeFinder(uint32_t inMaxFramesPerSlice, uint32_t inNumFreq, float
 }
 
 RangeFinder::~RangeFinder() {
-    LOGD("RangeFinder - 66 : RangeFinder Deconstructed");
+
     for (uint32_t i = 0; i < mNumFreqs; i++) {
         if (mSinBuffer[i] != NULL) {
             free(mSinBuffer[i]);
@@ -122,10 +119,10 @@ int16_t *RangeFinder::GetPlayBuffer(uint32_t inSamples) {
 }
 
 int16_t *RangeFinder::GetRecDataBuffer(uint32_t inSamples) {
-    LOGD("GetRecDataBuffer 119");
-    if (mRecDataBuffer == nullptr) {
-        LOGD("mRecDataBuffer is null - RangeFinder 121");
-    }
+
+
+
+
     int16_t *RecDataPointer = mRecDataBuffer + mCurRecPos;
 
 
@@ -137,10 +134,6 @@ int16_t *RangeFinder::GetRecDataBuffer(uint32_t inSamples) {
         RecDataPointer = mRecDataBuffer;
     }
 
-    LOGD("GetRecDataBuffer 130");
-    if (RecDataPointer == nullptr) {
-        LOGD("RecDataPointer is null - RangeFinder 132");
-    }
     return RecDataPointer;
 }
 

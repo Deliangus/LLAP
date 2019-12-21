@@ -27,14 +27,11 @@
 //Number of frame size
 #define MAX_FRAME_SIZE      1920
 
-//Speed adjust
-#define SPEED_ADJ           1.1
+
 #define DebugLog(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 
 
-
 class AudioController {
-    CallbackData callbackData;
 public:
     RangeFinder *_myRangeFinder;
 
@@ -43,8 +40,7 @@ public:
     void setUpAudio();
 
     static bool
-    performRender(CallbackData *__unused, short int *audioInputOutput, int numberOfSamples,
-                  int);
+    performRender(double);
 };
 
 
