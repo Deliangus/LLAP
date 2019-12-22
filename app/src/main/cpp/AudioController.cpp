@@ -53,7 +53,7 @@ void AudioController::setUpAudio() {
                                    rangeFinder, SL_ANDROID_RECORDING_PRESET_CAMCORDER,
                                    SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);
 
-    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true,
+    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, false,
                                    (AudioContrllerPerformRender) performRender,
                                    rangeFinder, SL_ANDROID_RECORDING_PRESET_CAMCORDER,
                                    SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);

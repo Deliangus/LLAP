@@ -48,6 +48,7 @@ bool SuperpoweredAndroidAudioIO::performRender(short int *audioInputOutput,
     if (fabs(distancechange) > 0.06 &&
         (startTime - mUIUpdateTime) / 1.0e6 > 10) {
         audioContrllerPerformRender(distance);
+        LOGD("Distance Update %d - %d", inputStreamType, (int) distance);
 //        DebugLog("distance: %f", distance* SPEED_ADJ);
 //        env->CallVoidMethod(instance,method,distancechange);
 //        audioController->env->CallVoidMethod(audioController->instance,audioController->method,int(distance));
@@ -201,6 +202,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     writeBufferIndex = 0;
     silenceSamples = 0;
     rangeFinder = rgF;
+    this->inputStreamType = inputStreamType;
     this->samplerate = samplerate;
     this->buffersize = buffersize;
     audioContrllerPerformRender = ACTperformRender;

@@ -72,6 +72,7 @@ public:
                        int inNumberFrames, int __unused samplerate);
 
 public:
+    int inputStreamType;
     int readBufferIndex;
     int writeBufferIndex;
     int silenceSamples;
