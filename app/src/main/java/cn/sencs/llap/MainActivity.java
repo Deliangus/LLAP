@@ -3,12 +3,12 @@ package cn.sencs.llap;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -23,44 +23,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final String TAG = "llap";
-    private SeekBar sb;
-    private TextView tv;
+    private MessageHandler mHandler;
+    private SeekBar sb_mic;
+    private TextView tv_mic;
+    private SeekBar sb_cam;
+    private TextView tv_cam;
     private int distance;
     private AudioSoundPlayer audioHandler;
     private ArrayList<Key> keys = new ArrayList<>();
     private Timer mTimer = new Timer();
     private ArrayList<Key> waitingQueues = new ArrayList<>();
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 0) {
-                tv.setText(Integer.toString(distance) + " mm");
-                sb.setProgress(distance);
-
-                /* Judging if this is a pressdown on the key*/
-                /*
-                final Key curKey = keyForDistance(distance);
-                Log.d(TAG, "key: " + curKey.sound);
-                TimerTask playSounds = new EnhancedTimerTask(curKey) {
-                    @Override
-                    public void run() {
-                        Key laterKey = keyForDistance(distance);
-                        if (this.key.sound == laterKey.sound){
-                            audioHandler.playNote(laterKey.sound);
-                        }else{
-                            for (Key key : keys){
-                                if(audioHandler.isNotePlaying(key.sound)){
-                                    audioHandler.stopNote(key.sound);
-                                }
-                            }
-                        }
-                    }
-                };
-                mTimer.schedule(playSounds, Constants.PAUSING_THRESHOLD);
-                */
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +40,35 @@ public class MainActivity extends AppCompatActivity {
         initPermission();
         setContentView(R.layout.activity_main);
 
-        tv = (TextView) findViewById(R.id.textView);
-        sb = (SeekBar) findViewById(R.id.seekBar);
+        tv_mic = (TextView) findViewById(R.id.textView_mic);
+        sb_mic = (SeekBar) findViewById(R.id.seekBar_mic);
+        tv_cam = (TextView) findViewById(R.id.textView_cam);
+        sb_cam = (SeekBar) findViewById(R.id.seekBar_cam);
+
+        mHandler = new MessageHandler() {
+            @Override
+            public void handleMessage(Message msg) {
+                Log.e("MessageHandler", String.format("MessageType: %d\tAudioSource: %d\tValue: %d\t", msg.what, msg.arg1, msg.arg2));
+                if (msg.what == MessageHandler.UPDATEDISTANCE) {
+                    Log.e("MESSAGE", String.format("%d %d %d", msg.what, msg.arg1, msg.arg2));
+                    int distance = msg.arg2;
+                    if (msg.arg1 == MessageHandler.AUDIOSOURCE_CAM) {
+                        //RangeFinder.LogCodeInfo();
+                        tv_cam.setText("CAM: " + distance + " mm");
+                        sb_cam.setProgress(distance);
+
+                    } else if (msg.arg1 == MessageHandler.AUDIOSOURCE_MIC) {
+                        //RangeFinder.LogCodeInfo();
+                        tv_mic.setText("MIC: " + distance + " mm");
+                        sb_mic.setProgress(distance);
+                    }
+                }
+            }
+        };
+
         audioHandler = new AudioSoundPlayer(getApplicationContext());
         final Button bt = (Button) findViewById(R.id.button);
-        tv.setText("0 mm");
+        tv_mic.setText("0 mm");
 
         /*Hard coding the relation between range and sound playing*/
         keys.add(new Key(1, 0, 12));
@@ -92,11 +88,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void refresh(int progress) {
+    public void refresh(int progress, int audioSource) {
         Message msg = new Message();
         distance = progress;
-        msg.what = 0;
-        handler.sendMessage(msg);
+        msg.what = MessageHandler.UPDATEDISTANCE;
+        msg.arg1 = audioSource;
+        msg.arg2 = progress;
+        mHandler.sendMessage(msg);
     }
 
     private void initPermission() {

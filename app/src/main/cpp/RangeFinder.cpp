@@ -120,17 +120,13 @@ int16_t *RangeFinder::GetPlayBuffer(uint32_t inSamples) {
 
 int16_t *RangeFinder::GetRecDataBuffer(uint32_t inSamples) {
 
-
-
-
     int16_t *RecDataPointer = mRecDataBuffer + mCurRecPos;
-
 
     mCurRecPos += inSamples;
 
     if (mCurRecPos >= mRecDataSize) //over flowed RecBuffer
     {
-        mCurRecPos = 0;
+        mCurRecPos = inSamples;
         RecDataPointer = mRecDataBuffer;
     }
 

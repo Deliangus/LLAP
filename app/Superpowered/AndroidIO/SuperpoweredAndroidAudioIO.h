@@ -14,9 +14,11 @@
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
+#define AUDIOSOURCE_MIC 1
+#define AUDIOSOURCE_CAM 5
 struct SuperpoweredAndroidAudioIOInternals;
 
-typedef bool (*AudioContrllerPerformRender)(double);
+typedef bool (*AudioContrllerPerformRender)(double, int);
 
 /**
  @brief Easy handling of OpenSL ES audio input and/or output.
@@ -39,8 +41,7 @@ public:
     SuperpoweredAndroidAudioIO(int samplerate, int buffersize, bool enableInput,
                                bool enableOutput, AudioContrllerPerformRender performRender,
                                RangeFinder *rgF, int inputStreamType = -1,
-                               int outputStreamType = -1,
-                               int latencySamples = 0);
+                               int outputStreamType = -1);
 
     ~SuperpoweredAndroidAudioIO();
 
@@ -68,8 +69,7 @@ public:
 */
     void stop();
 
-    bool performRender(short int *audioInputOutput,
-                       int inNumberFrames, int __unused samplerate);
+    bool performRender(short int *audioInputOutput, int audioSource);
 
 public:
     int inputStreamType;
@@ -86,7 +86,7 @@ public:
     bool started;
     short int *silence;
     int latencySamples;
-    int numBuffers;
+    const int numBuffers = 32;
     int bufferStep;
     short int *fifobuffer;
     SLObjectItf openSLEngine;

@@ -18,19 +18,12 @@ jclass mClass;
 JavaVM *gs_jvm;
 
 
-bool AudioController::performRender(double distance) {
-
-    if (distance < 0) {
-        distance = 0;
-    }
-    if (distance > 500) {
-        distance = 500;
-    }
+bool AudioController::performRender(double distance, int audioSource) {
 
     JNIEnv *env;
     if ((*gs_jvm).AttachCurrentThread(&env, NULL) < 0) {
     } else {
-        (*env).CallVoidMethod(mObject, gOnNativeID, int(distance));
+        (*env).CallVoidMethod(mObject, gOnNativeID, int(distance), audioSource);
     }
 
     return true;
@@ -44,19 +37,25 @@ void AudioController::init() {
 
 void AudioController::setUpAudio() {
     DebugLog("setUpAudio");
-    RangeFinder *rangeFinder = new RangeFinder(MAX_FRAME_SIZE, NUM_FREQ, START_FREQ, FREQ_INTERVAL);
-
+    RangeFinder *rangeFinder_mic = new RangeFinder(MAX_FRAME_SIZE, NUM_FREQ, START_FREQ,
+                                                   FREQ_INTERVAL);
+    RangeFinder *rangeFinder_cam = new RangeFinder(MAX_FRAME_SIZE, NUM_FREQ, START_FREQ,
+                                                   FREQ_INTERVAL);
     SuperpoweredCPU::setSustainedPerformanceMode(true);
 
+    //*
     new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true,
                                    (AudioContrllerPerformRender) performRender,
-                                   rangeFinder, SL_ANDROID_RECORDING_PRESET_CAMCORDER,
-                                   SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);
+                                   rangeFinder_mic, SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION,
+                                   SL_ANDROID_STREAM_MEDIA);
+    //*/
 
-    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, false,
+    /*
+    new SuperpoweredAndroidAudioIO(AUDIO_SAMPLE_RATE, MAX_FRAME_SIZE, true, true,
                                    (AudioContrllerPerformRender) performRender,
-                                   rangeFinder, SL_ANDROID_RECORDING_PRESET_CAMCORDER,
-                                   SL_ANDROID_STREAM_MEDIA, MAX_FRAME_SIZE * 2);
+                                   rangeFinder_cam, SL_ANDROID_RECORDING_PRESET_CAMCORDER,
+                                   SL_ANDROID_STREAM_MEDIA);
+    //*/
 
 }
 
@@ -70,7 +69,7 @@ Java_cn_sencs_llap_MainActivity_Begin(JNIEnv *env, jobject instance) {
     }
 
     mObject = (jobject) (*env).NewGlobalRef(instance);
-    gOnNativeID = (*env).GetMethodID(clazz, "refresh", "(I)V");
+    gOnNativeID = (*env).GetMethodID(clazz, "refresh", "(II)V");
     if (gOnNativeID == NULL) {
         DebugLog("gOnNativeID IS NULL................");
         return;

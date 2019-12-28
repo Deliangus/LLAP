@@ -11,6 +11,7 @@
 
 
 #define NUM_CHANNELS 1
+#define NUM_CHANNELS_TWO 2
 
 int64_t getTimeNsec() {
     timespec now;
@@ -18,14 +19,13 @@ int64_t getTimeNsec() {
     return (int64_t) now.tv_sec * 1000000000LL + now.tv_nsec;
 }
 
-bool SuperpoweredAndroidAudioIO::performRender(short int *audioInputOutput,
-                                               int inNumberFrames, int __unused samplerate) {
+bool SuperpoweredAndroidAudioIO::performRender(short int *audioInputOutput, int audioSource) {
 
     uint64_t startTime = (uint64_t) getTimeNsec();
 
-    memcpy((void *) rangeFinder->GetRecDataBuffer(inNumberFrames),
+    memcpy((void *) rangeFinder->GetRecDataBuffer(buffersize),
            (void *) audioInputOutput,
-           sizeof(int16_t) * inNumberFrames);
+           sizeof(int16_t) * buffersize);
 
     distancechange = rangeFinder->GetDistanceChange();
 
@@ -40,14 +40,19 @@ bool SuperpoweredAndroidAudioIO::performRender(short int *audioInputOutput,
     }
 
     memcpy((void *) audioInputOutput,
-           (void *) rangeFinder->GetPlayBuffer(inNumberFrames),
-           sizeof(int16_t) * inNumberFrames);
+           (void *) rangeFinder->GetPlayBuffer(buffersize),
+           sizeof(int16_t) * buffersize);
 
     mtime = startTime;
 
     if (fabs(distancechange) > 0.06 &&
         (startTime - mUIUpdateTime) / 1.0e6 > 10) {
-        audioContrllerPerformRender(distance);
+        if (audioSource == 0) {
+            audioSource = AUDIOSOURCE_CAM;
+        } else {
+            audioSource = AUDIOSOURCE_MIC;
+        }
+        audioContrllerPerformRender(distance, audioSource);
         LOGD("Distance Update %d - %d", inputStreamType, (int) distance);
 //        DebugLog("distance: %f", distance* SPEED_ADJ);
 //        env->CallVoidMethod(instance,method,distancechange);
@@ -83,8 +88,7 @@ short int *SuperpoweredAndroidAudioIO::InputCallBack() {
         if (buffersAvailable * buffersize >=
             latencySamples) { // if we have enough audio input available
 
-            performRender(fifobuffer + readBufferIndex * bufferStep,
-                          buffersize, samplerate);
+            performRender(fifobuffer + readBufferIndex * bufferStep, 0);
 
             readBufferIndex = (readBufferIndex + 1) % numBuffers;
         };
@@ -137,11 +141,10 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
 
     if (hasInput) { // If audio input is enabled.
 
-        if (buffersAvailable * buffersize >=
-            latencySamples) { // if we have enough audio input available
+        if (buffersAvailable >= 2) { // if we have enough audio input available
 
-
-            if (!performRender(output, buffersize, samplerate)) {
+            if (!performRender(output, (readBufferIndex % 2))) {
+                performRender(output + bufferStep, ((readBufferIndex+1) % 2));
                 memset(output, 0, (size_t) buffersize * NUM_CHANNELS * 2);
                 silenceSamples += buffersize;
             } else silenceSamples = 0;
@@ -150,8 +153,7 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
     } else { // If audio input is not enabled.
         short int *audioToGenerate = fifobuffer + writeBufferIndex * bufferStep;
 
-        if (!performRender(audioToGenerate, buffersize,
-                           samplerate)) {
+        if (!performRender(audioToGenerate, 0)) {
             memset(audioToGenerate, 0, (size_t) buffersize * NUM_CHANNELS * 2);
             silenceSamples += buffersize;
         } else silenceSamples = 0;
@@ -176,6 +178,7 @@ short int *SuperpoweredAndroidAudioIO::OutputCallBack() {
 static void SuperpoweredAndroidAudioIO_OutputCallback(
         SLAndroidSimpleBufferQueueItf caller, void *pContext) {
     SuperpoweredAndroidAudioIO *ctrl = (SuperpoweredAndroidAudioIO *) pContext;
+    //LOGD("IO_OutputCallBack %p", (char *) caller);
 
     short int *output = ctrl->OutputCallBack();
     (*caller)->Enqueue(caller, output ? output : ctrl->silence,
@@ -191,7 +194,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
                                                        bool enableInput, bool enableOutput,
                                                        AudioContrllerPerformRender ACTperformRender,
                                                        RangeFinder *rgF, int inputStreamType,
-                                                       int outputStreamType, int latencySamples) {
+                                                       int outputStreamType) {
     static const SLboolean requireds[2] = {SL_BOOLEAN_TRUE, SL_BOOLEAN_FALSE};
 
     mtime = 0;
@@ -212,13 +215,17 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     started = false;
     silence = (short int *) malloc((size_t) buffersize * NUM_CHANNELS * 2);
     memset(silence, 0, (size_t) buffersize * NUM_CHANNELS * 2);
-    this->latencySamples = latencySamples < buffersize ? buffersize : latencySamples;
+    this->latencySamples = buffersize * 2;
 
-    numBuffers = (latencySamples / buffersize) * 2;
-    if (numBuffers < 32) numBuffers = 32;
     bufferStep = (buffersize + 64) * NUM_CHANNELS;
+    //bufferStep = 96
+
     size_t fifoBufferSizeBytes = numBuffers * bufferStep * sizeof(short int);
+    //fifoBufferSizeBytes = 32*96*sizeof(short int);
+
     fifobuffer = (short int *) malloc(fifoBufferSizeBytes);
+    //fifobuffer = short int[32][96]
+
     memset(fifobuffer, 0, fifoBufferSizeBytes);
 
     // Create the OpenSL ES engine.
@@ -297,6 +304,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     if (enableInput) { // Initialize the audio input buffer queue.
         (*inputBufferQueue)->GetInterface(inputBufferQueue, SL_IID_ANDROIDSIMPLEBUFFERQUEUE,
                                           &inputBufferQueueInterface);
+
         (*inputBufferQueueInterface)->RegisterCallback(inputBufferQueueInterface,
                                                        &SuperpoweredAndroidAudioIO_InputCallback,
                                                        this);
@@ -307,6 +315,7 @@ SuperpoweredAndroidAudioIO::SuperpoweredAndroidAudioIO(int samplerate, int buffe
     if (enableOutput) { // Initialize the audio output buffer queue.
         (*outputBufferQueue)->GetInterface(outputBufferQueue, SL_IID_BUFFERQUEUE,
                                            &outputBufferQueueInterface);
+        //LOGD("RegisterCallBack %p", (char *) outputBufferQueueInterface);
         (*outputBufferQueueInterface)->RegisterCallback(outputBufferQueueInterface,
                                                         &SuperpoweredAndroidAudioIO_OutputCallback,
                                                         this);

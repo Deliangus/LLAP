@@ -39,7 +39,7 @@ public:
 
     void setUpAudio();
 
-    static bool performRender(double);
+    static bool performRender(double, int);
 };
 
 
