@@ -31,6 +31,12 @@
 				
 				{
 					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=D:/AndroidSDK/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=D:/AndroidSDK/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I..\\..\\..\\..\\superpowered -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\libs\\arm64-v8a\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include\\backward  -isystem D:/AndroidSDK/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -ID:/Project/LLAP/app/superpowered -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "D:/Project/LLAP/app/src/main/cpp/LLAP2D.cpp",
+					"workingDirectory" : "D:/Project/LLAP/app/.cxx/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=D:/AndroidSDK/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=D:/AndroidSDK/ndk/16.1.4479499/sysroot  -DLLAP_EXPORTS -I..\\..\\..\\..\\superpowered -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\libs\\arm64-v8a\\include -isystem D:\\AndroidSDK\\ndk\\16.1.4479499\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\include\\backward  -isystem D:/AndroidSDK/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++11 -fsigned-char -ID:/Project/LLAP/app/superpowered -O0 -fno-limit-debug-info  -fPIC    -c ",
 					"src" : "D:/Project/LLAP/app/Superpowered/AndroidIO/SuperpoweredAndroidAudioIO.cpp",
 					"workingDirectory" : "D:/Project/LLAP/app/.cxx/cmake/debug/arm64-v8a"
 				}

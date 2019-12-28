@@ -6,8 +6,8 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 set(
-	PATH_TO_SUPERPOWERED
-	CACHE STRING ""
+        PATH_TO_SUPERPOWERED
+        CACHE STRING ""
 )
 
 
@@ -17,18 +17,18 @@ set(
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-             LLAP
+        LLAP
 
-             # Sets the library as a shared library.
-             SHARED
+        # Sets the library as a shared library.
+        SHARED
 
-             # Provides a relative path to your source file(s).
-             src/main/cpp/AudioController.cpp
-             src/main/cpp/RangeFinder.cpp
-             ${PATH_TO_SUPERPOWERED}/AndroidIO/SuperpoweredAndroidAudioIO.cpp )
+        # Provides a relative path to your source file(s).
+        src/main/cpp/AudioController.cpp
+        src/main/cpp/RangeFinder.cpp
+        src/main/cpp/LLAP2D.cpp
+        ${PATH_TO_SUPERPOWERED}/AndroidIO/SuperpoweredAndroidAudioIO.cpp)
 
 include_directories(${PATH_TO_SUPERPOWERED})
-
 
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -38,22 +38,22 @@ include_directories(${PATH_TO_SUPERPOWERED})
 # completing its build.
 
 find_library( # Sets the name of the path variable.
-              log-lib
+        log-lib
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       LLAP
+        LLAP
 
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib}
-                       android
-                       OpenSLES
-                       ${PATH_TO_SUPERPOWERED}/libSuperpoweredAndroid${ANDROID_ABI}.a )
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib}
+        android
+        OpenSLES
+        ${PATH_TO_SUPERPOWERED}/libSuperpoweredAndroid${ANDROID_ABI}.a)
