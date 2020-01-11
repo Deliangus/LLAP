@@ -5,7 +5,6 @@ import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -69,14 +68,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private int encodingBitrate = AudioFormat.ENCODING_PCM_16BIT;
     private int cicdec = 16;
-    private int cicsec = 3;
-    private int cicdelay = cicdec * 17;
+    //private int cicsec = 3;
+    //private int cicdelay = cicdec * 17;
     private double[] baseband = new double[2 * numfreq * 2 * frameSize / cicdec];
     private double[] baseband_nodc = new double[2 * numfreq * 2 * frameSize / cicdec];
     private short[] dcvalue = new short[4 * numfreq];
     private int[] trace_x = new int[1000];
     private int[] trace_y = new int[1000];
-    private int tracecount = 0;
+    private int[] tracecount = new int[1];
     private boolean isCalibrated = false;
     private int now;
     private int lastcalibration;
@@ -91,26 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Socket datasocket;
     private OutputStream datastream;
-    private Handler updateviews = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 0) {
-                if (isCalibrated) {
-                    texDistance_x.setText(String.format("x=%04.2f", disx / 20) + "cm");
-                    texDistance_y.setText(String.format("y=%04.2f", disy / 20) + "cm");
-                } else {
-                    texDistance_x.setText("Calibrating...");
-                    texDistance_y.setText("");
-
-                }
-                mylog("count" + tracecount);
-                mytrace.setTrace(trace_x, trace_y, tracecount);
-                tracecount = 0;
-            }
-        }
-
-
-    };
+    private MessageHandler updateviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
         now = 0;
         lastcalibration = 0;
 
-        tracecount = 0;
+        updateviews = new MessageHandler(texDistance_x, texDistance_y, mytrace, trace_x, trace_y, tracecount);
+
 
         mylog("initialization start at time: " + System.currentTimeMillis());
         mylog(initdownconvert(sampleRateInHz, numfreq, wavefreqs));
@@ -367,23 +348,29 @@ public class MainActivity extends AppCompatActivity {
                                 disy = (tempsum + micdis1 + micdis2) / 2;
                             }
                         }
-                        trace_x[tracecount] = (int) Math.round((disy * micdis1 * micdis1 - disx * micdis2 * micdis2 + disx * disy * (disy - disx)) / 2 / (disx * micdis2 + disy * micdis1));
-                        trace_y[tracecount] = (int) Math.round(Math.sqrt(Math.abs((disx * disx - micdis1 * micdis1) * (disy * disy - micdis2 * micdis2) * ((micdis1 + micdis2) * (micdis1 + micdis2) - (disx - disy) * (disx - disy)))) / 2 / (disx * micdis2 + disy * micdis1));
-                        mylog("x=" + trace_x[tracecount] + "y=" + trace_y[tracecount]);
-                        tracecount++;
+                        trace_x[tracecount[0]] = (int) Math.round((disy * micdis1 * micdis1 - disx * micdis2 * micdis2 + disx * disy * (disy - disx)) / 2 / (disx * micdis2 + disy * micdis1));
+                        trace_y[tracecount[0]] = (int) Math.round(Math.sqrt(Math.abs((disx * disx - micdis1 * micdis1) * (disy * disy - micdis2 * micdis2) * ((micdis1 + micdis2) * (micdis1 + micdis2) - (disx - disy) * (disx - disy)))) / 2 / (disx * micdis2 + disy * micdis1));
+                        mylog("x=" + trace_x[tracecount[0]] + "y=" + trace_y[tracecount[0]]);
+                        tracecount[0]++;
 
                     }
 
 
-                    if (Math.abs(displaydis - disx) > 2 || (tracecount > 10)) {
+                    if (Math.abs(displaydis - disx) > 2 || (tracecount[0] > 10)) {
                         Message msg = new Message();
-                        msg.what = 0;
-                        displaydis = disx;
+                        msg.what = MessageHandler.UPDATEDISTANCE;
+                        msg.arg1 = MessageHandler.DistanceUpdateX;
+                        msg.arg2 = (int) disx;
+                        updateviews.sendMessage(msg);
+                        msg = new Message();
+                        msg.what = MessageHandler.UPDATEDISTANCE;
+                        msg.arg1 = MessageHandler.DistanceUpdateY;
+                        msg.arg2 = (int) disy;
                         updateviews.sendMessage(msg);
                     }
                     if (!isCalibrated) {
                         Message msg = new Message();
-                        msg.what = 0;
+                        msg.what = MessageHandler.UNCALIBRATED;
                         updateviews.sendMessage(msg);
                     }
 
@@ -440,26 +427,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-  /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }

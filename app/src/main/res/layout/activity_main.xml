@@ -18,10 +18,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -29,38 +27,24 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:popupTheme="@style/AppTheme.PopupOverlay"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="58dp"
-        android:textSize="50px"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnstoprecord" />
-
     <Button
         android:id="@+id/btnplayrecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="61dp"
         android:layout_alignTop="@+id/btnstoprecord"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="143dp"
-        android:layout_marginTop="69dp"
-        android:layout_marginEnd="143dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/buttonshape"
         android:text="  play  "
         android:textColor="#ffffff"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.772"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnstoprecord"
@@ -68,36 +52,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="141dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="143dp"
         android:background="@drawable/buttonshape"
         android:text="  stop  "
         android:textColor="#ffffff"
         android:textSize="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnplayrecord"
+        app:layout_constraintStart_toStartOf="@+id/btnplayrecord"
         app:layout_constraintTop_toBottomOf="@+id/btnplayrecord" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnplayrecord"
-        android:layout_alignEnd="@+id/texdistance"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="90dp"
-        android:text="Calibrating"
-        android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#008000"
-        android:textSize="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/texdistance"
@@ -107,14 +68,30 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="58dp"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#008000"
         android:textSize="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnplayrecord"
+        android:layout_alignEnd="@+id/texdistance"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="Calibrating"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#008000"
+        android:textSize="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnstoprecord"
+        app:layout_constraintStart_toStartOf="@+id/btnstoprecord"
+        app:layout_constraintTop_toBottomOf="@+id/btnstoprecord" />
 
 
 </android.support.constraint.ConstraintLayout>
